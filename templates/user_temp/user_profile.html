@@ -1,0 +1,130 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Main Wrapper Start -->
+<div class="wrapper bg--shaft">
+
+<!-- navbar Start -->
+<div class ="container-fluid">
+    {% include 'user_temp/includes/navbar.html' %}
+</div>
+<!-- navbar End -->
+
+      <!-- Breadcumb area Start -->
+      <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="page-title">My Profile</h1>
+                    <ul class="breadcrumb justify-content-center">
+                        <li><a href="{% url 'user_home' %}">Home</a></li>
+                        <li class="current"><a href="{% url 'user_profile' %}">Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcumb area End -->
+
+    <!-- Main Content wrapper start -->
+
+    <section class="main-content-wrapper">
+        <div class="account-wrapper pt--40 pb--80 pt-md--30 pb-md--60">
+            <div class="container">
+                <div class="user-dashboard-tab">
+                    <div class="row">
+                        <div class="col-lg-2 mb-md--30">
+                            <div class="user-dashboard-tab__head nav flex-column" role="tablist" aria-orientation="vertical">
+                                <a class="nav-link active" data-bs-toggle="pill" role="tab" href="{% url 'user_profile' %}" aria-controls="dashboard" aria-selected="true">My Profile</a>
+                               
+                                <a href="{% url 'order_details' %}" class="nav-link"> My Orders</a>
+
+                                <a class="nav-link" href="{% url 'address_details' %}">Addressess</a>
+                                <a class="nav-link" href="{% url 'user_logout' %}">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="user-dashboard-tab__content tab-content">
+                                <div class="tab-pane fade show active">
+                                    <h3>Hello <strong>{{user_profile.first_name}} {{user_profile.last_name}}</strong> </h3>
+                                    <p>From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password.</p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <br>
+                                    <br>
+                                    <div class="tab-pane fade show active">
+                                        <div class="account-form bg--2">
+                                            <form action="{%url 'change_password' %}" method="POST">
+                                                {% csrf_token %}
+                                                
+                                               
+                                                <div class="form-row">
+                                                    <div class="col-12">
+                                                        <h4>CHANGE PASSWORD </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label for="cur_password" class="form__label">Current Password :</label>
+                                                            <input type="password" name="current_password"  class="form__input form__input--2" placeholder="Current Password">
+                                                        </div>
+                                                    </div>
+                                                </div>                                             
+                                                <div class="form-row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label for="new_password" class="form__label">New Password :</label>
+                                                            <input type="password" name="new_password"  class="form__input form__input--2" placeholder="New Password">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label for="new_password" class="form__label">Confirm Password :</label>
+                                                            <input type="password" name="confirm_password" class="form__input form__input--2" placeholder="Confirm Password">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-medium btn-style-2">Reset password</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            {% for pm in messages %}
+                                            <p style="color:red;">{{pm}}</p>
+                                            {% endfor %} 
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>    
+        </div>
+    </section>
+
+    <!-- Main Content wrapper end -->
+
+
+     <!-- Footer Start  -->
+   <div class="container-fluid">
+    {% include 'user_temp/includes/footer.html'%}
+   </div>
+
+    <!-- Scroll To Top Start -->    
+    <a class="scroll-to-top" href="#"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Scroll To Top End -->
+</div>
+<!-- Main Wrapper End -->
+
+
+
+
+{% endblock %}

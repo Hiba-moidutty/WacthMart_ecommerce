@@ -1,0 +1,225 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h3 class="page-title">Order Management</h3>
+          <nav aria-label="breadcrumb">
+            <!-- <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Tables</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol> -->
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-lg grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">User's Order List</h4>
+                <!-- <p class="card-description"> Add class <code>.table-hover</code></p> -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Order Number</th>
+                        <th>Product</th>
+                        <th>User</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Ordered Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for order in orders %}
+                      <tr>
+                        <td>{{order.order_number}}</td>
+                        <td>{{order.product}} 
+                          <img src="/media/{{order.product.img1}}"> </img>
+                        </td>
+                        <td>{{order.user}}</td>
+                        <td>{{order.quantity}}</td>
+                        <td>{{order.total_price}}</td>
+                        <td>{{order.order_date }}</td>
+                        <td>
+                      {% if order.status == "Return requested waiting for approval" %}
+                      <button onclick = approve_return({{order.id}}) class="btn btn-secondary">Approve return</button> 
+
+                      {% elif order.status == "Cancelled" %}
+                      <h5>Order Cancelled</h5>
+
+                      {% else %}
+                        <select  id = "selectbox{{ forloop.counter }}"  onchange=idc("selectbox{{ forloop.counter}}",{{order.id}}) class="form-select" aria-label="Default select example">
+
+                        {% if order.status == "placed" %}
+                        <option selected>{{order.status}}</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Out for delivery">Out for Delivery</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Refund in progress">Refund in progress</option>
+                        <option value="Refund initiated">Refund initiated</option>
+                        
+                        {% elif order.status == "Shipped" %}
+                        <option selected>{{order.status}}</option>
+                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Refund in progress">Refund in progress</option>
+                        {% comment %} <option value="Refund initiated">Refund initiated</option> {% endcomment %}
+
+                        {% elif order.status == "Out for Delivery" %}
+                        <option selected>{{order.status}}</option>
+                        <option value="Delivered">Delivered</option>
+                        {% comment %} <option value="Refund in progress">Refund in progress</option>
+                        <option value="Refund initiated">Refund initiated</option> {% endcomment %}
+
+                        {% elif order.status == "Delivered" %}
+                        <option selected>{{order.status}}</option>
+                        {% comment %} <option value="Delivered">Delivered</option> {% endcomment %}
+
+                        {% elif order.status == "Return Approved" %}
+                        <option selected>{{order.status}}</option>
+                        <option value="Delivered">Refund In Progress</option>
+                        {% comment %} <option value="Delivered">Refund Initiated</option> {% endcomment %}
+
+
+                        {% elif order.status == "Refund in Progress" %}
+                        <option selected>{{order.status}}</option>
+                        <option value="Delivered">Refund Initiated</option>
+
+                        {% elif order.status == "Refund Approved" %}
+                        <option selected>{{order.status}}</option>
+                        <option value="Delivered">Refund Initiated</option>
+                        {% endif %}
+                        </select>
+
+                      {% endif %}
+                      </td>
+                      {% if order.status == "placed" %}
+                      <td><button onclick= cancel_order({{order.id}}) type="button" class="btn btn-secondary">Cancel</button></td>
+
+                      {% else %}
+                      <a></a>
+                      {% endif %}
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+      <!-- partial:partials/_footer.html -->
+      {% include 'admin_temp/includes/footer.html' %}
+      <!-- partial -->
+    </div>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+<script>
+
+function cancel_order(id){
+  Swal.fire({
+      title: "Are you sure you want to cancel the order?",
+      icon : 'warning',
+      showCancelButton: true,   
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!'
+      }).then((result) => {
+      if (result.isConfirmed) {
+
+          $.ajax({
+              type : 'GET',
+              url : "{% url 'admin_order_cancel' %}",
+              data : { 'value' : "True", 'id': id } ,
+              success : function(data){
+                  location.reload();
+              },
+              error: function() { 
+                alert("error occured" );  
+            }   
+          })
+      }
+  }
+)}
+
+
+
+function idc(id,oid){
+
+  var value  = $("#"+id).val();
+  var url = "{% url 'admin_orderedit' %}"
+      Swal.fire({
+        title:'Are you sure you want to change the status?',
+        icon:'warning',
+        showCancelButton: true,
+        confirmButtonColor:'#3085d6',
+        cancelButtonColor:'#d33',
+        confirmButtonText:'Yes'
+      }).then((result) => {
+        if(result.isConfirmed){
+          $.ajax({
+            type:"GET",
+            url : url,
+            data:{"value": value, "oid": oid},
+            success : function(data) {
+              
+              $("#orderlist").html(data);
+
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Order status changed',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            },
+            error: function(){
+              alert('Error occured');
+            }
+          });
+        }
+      })
+}
+
+  function approve_return(id){
+
+    var url = "{% url 'approve_return' %}"
+    $.ajax({
+      type : "GET",
+      url : url,
+      data : {'value' : "True","id" : id},
+      success : function(data){
+        Swal.fire({
+            title: 'Are you sure you want to approve?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'admin_orderlist';
+                }
+            })
+        },
+      error : function(){
+          alert('Error occured');
+        }
+    });
+  
+  }
+  </script>
+{% endblock %}

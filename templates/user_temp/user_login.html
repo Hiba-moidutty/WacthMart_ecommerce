@@ -1,0 +1,89 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #242424;
+      }
+    
+</style>
+<!-- Main Wrapper Start -->
+<!-- <div class="bg-dark"> -->
+
+  <!-- Main Wrapper Start -->
+  <!-- <div class="main-content-wrapper">
+    <div class="login-register-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+                    <h2 class="heading-secondary mb--30">Login</h2>
+                    <div class="login-reg-box p-4 bg--2">
+                      <form action=" " method="POST">
+                          {% csrf_token %}
+                            <div class="form-holder mb--20">
+                                <label class="form__label" >Email address <span>*</span></label>
+                                <input type="email" name="email" id="email" class="form__input form__input--2" placeholder="Email">
+                            </div>
+                            <div class="form-holder mb--20">
+                              <label class="form__label">Password <span>*</span></label>
+                                <input type="password" name="password" id="password" class="form__input form__input--2" placeholder="Password">
+                            </div>
+                            <div class="form__group mb--20">
+                                <button type="submit" class="btn btn-5 btn-style-2">Login</button>
+                            </div>
+                        <a href="{% url 'login_otp' %}" >Login with OTP</a>
+                        </form>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+        <!-- </div>
+        </div>
+    </div> -->
+    <!-- Main Wrapper End -->
+
+        <div class="main-content-wrapper">
+            <div class="login-register-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 mx-auto">
+                            <h2 class="heading-secondary mb--30">Login</h2>
+                            <div class="login-reg-box p-5 bg--2" >
+                                <form action=" " method="POST">
+                                    {% csrf_token %}
+                                    <div class="form__group mb--20">
+                                        <label class="form__label" for="username_email">
+                                             Email address <span>*</span>
+                                        </label>
+                                        <input type="email" name="email" id="email" class="form__input form__input--2">
+                                    </div>
+                                    <div class="form__group mb--20">
+                                        <label class="form__label" for="password">
+                                            Password <span>*</span>
+                                        </label>
+                                        <input type="password" name="password" id="password" class="form__input form__input--2">
+                                    </div>
+                                    <div class="form__group d-flex align-items-center">
+                                        
+                                        <button type="submit" class="btn btn-5 btn-style-1 color-1">Login</button>
+                                        
+                                        <div class="custom-checkbox ml--20">
+                                            <input type="checkbox" name="sessionStore" id="sessionStore" class="form__checkbox">
+                                            <a href="{% url 'login_otp' %}" class="forgot-pass">Login with OTP</a>
+                                            <!-- <label for="sessionStore" class="form__checkbox--label">Remember me</label> -->
+                                        </div>
+                                    </div>
+                                    
+                                </form>
+                                {% for pm in messages %}
+                                <p style="color:red;">{{pm}}</p>
+                                {% endfor %} 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- </div> -->
+{% endblock %}

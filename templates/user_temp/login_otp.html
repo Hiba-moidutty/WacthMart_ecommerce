@@ -1,0 +1,45 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<style>
+  body {
+      background-color: #242424;
+    }
+  
+</style>
+<!-- Main Wrapper Start -->
+<!-- <div class="wrapper bg--shaft"> -->
+
+  <!-- Main Wrapper Start -->
+  <div class="main-content-wrapper">
+    <div class="login-register-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+                    <h2 class="heading-secondary mb--30">Login with OTP</h2>
+                    <div class="login-reg-box p-4 bg--2">
+                      <form action="login_otp" method="POST">
+                          {% csrf_token %}
+                            <div class="form-holder mb--20">
+                                <label class="form__label">Phone Number <span>*</span></label>
+                                  <input type="text" name="phone_number" id="phone_number" class="form__input form__input--2" placeholder="Phone_number">
+                              </div>
+                            <div class="form__group mb--20">
+                                <button type="submit" class="btn btn-5 btn-style-2">Login</button>
+                            </div>
+                        </form>
+                        <div class="form__group mb--20">
+                          <a href="{% url 'user_login' %}" type="submit">Login with Password</a>
+                      </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+</div>
+<!-- Main Wrapper End -->
+
+{% endblock %}

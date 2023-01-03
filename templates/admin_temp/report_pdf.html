@@ -1,0 +1,60 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          {% comment %} <h3 class="page-title">Order Management</h3> {% endcomment %}
+          <nav aria-label="breadcrumb">
+            <!-- <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Tables</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol> -->
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-lg grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title">Sales Report from -{{from}} to -{{to}}</h2>
+                <!-- <p class="card-description"> Add class <code>.table-hover</code></p> -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Revenue</th>
+                  
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for r in Report %}
+                         {% for j in r %}
+                      <tr>
+                        <td>{{r.Date}}</td>
+                        <td>{{r.User}}</td>
+                        <td>{{r.Product}}</td>
+                        <td>{{r.Quantity}}</td>
+                        <td>{{r.Revenue}}</td>
+                      </tr>
+                        {% endfor %}
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  <h1 style="color: white; text-align:center;">Total Revenue = {{total_rev}}
+                </div>
+              </div>
+    </div>
+</div>
+
+
+{% endblock %}

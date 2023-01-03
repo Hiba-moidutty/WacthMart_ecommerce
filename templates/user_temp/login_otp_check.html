@@ -1,0 +1,39 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<style>
+  body {
+      background-color: #242424;
+    }
+  
+</style>
+<!-- Main Wrapper Start -->
+<!-- <div class="wrapper bg--shaft"> -->
+  <div class="main-content-wrapper">
+    <div class="login-register-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+                    <h2 class="heading-secondary mb--30">Login with OTP</h2>
+                    <div class="login-reg-box p-4 bg--2">
+            
+                      <form action="otp_login_validate" method="POST">
+                       {% csrf_token %}
+                          <div class="form-holder col-lg-6 mb--20">
+                            <label class="form__label">Enter Your OTP<span>*</span></label>
+            
+                            <input type="text" class="form__input form__input--2" name='otp' placeholder="Otp">
+                            <input type ="hidden" name="phone" value="{{phone}}">
+                            <button type="submit">Login</button>
+                          </div>
+                        </form>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+</div>
+
+{% endblock %}

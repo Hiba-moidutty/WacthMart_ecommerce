@@ -1,0 +1,179 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% block content %}
+
+{% if messages %}
+  {% for message in messages %}
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if message.tags == 'success' %}
+<script>
+  var m = "{{ message }}";
+  Swal.fire({
+    icon:'success',
+    text: m,
+  })
+</script>
+    {% else %}
+    <script>
+      var m = "{{ message }}";
+      Swal.fire({
+        icon:'error',
+        text: m,
+      })
+    </script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial -->
+    
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          {% comment %} <h3 class="page-title">Sales Report</h3> {% endcomment %}
+          <nav aria-label="breadcrumb">
+            {% comment %} <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Tables</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol> {% endcomment %}
+          </nav>
+        </div>
+    <form action="{% url 'sales_report' %}"  method="GET">
+      <div class="row">
+        <div class="col-md-4 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">By Date</h4>
+              <div class="md-form md-outline input-with-post-icon datepicker">
+                <label>From</label>
+                <input name = "from_date" onchange= validateDate() placeholder="Select date" max="" type="date" id="start" class="form-control">
+              </div>
+              <div class=class="md-form md-outline input-with-post-icon datepicker">
+                <label>To</label>
+                <input name = "to_date" onchange= validateEnd() placeholder="Select date" min="" type="date" id="end" class="form-control">
+              </div>
+              <div class="my-3">
+                <button type="submit" class="btn btn-outline-primary btn-icon-text">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <div class="col-md-4 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">By Month</h4>
+              <div class="form-group">
+                <label>Select Month</label>
+                <select name="Month" class="js-example-basic-single" style="width:100%">
+                  <option value="0">Select by Month</option>
+                  <option value="1">January</option>
+                  <option value="2">February</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+               <h4 class="card-title">Export Options</h4> 
+              <a onclick = DoAction() class="btn btn-outline-primary btn-icon-text">
+                <i class="mdi mdi-file-check btn-icon-prepend"></i> Export as PDF </a>
+              <div class="form-group my-4">
+                <a href="" class="btn btn-outline-primary btn-icon-text">
+                <i class="mdi mdi-file-check btn-icon-prepend"></i> Export as CSV </a>
+              </div>
+            </div>
+        </div> 
+      </div>
+    </form>
+        <div class="row">
+          <div class="col-lg grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Sales Report</h4>
+                <!-- <p class="card-description"> Add class <code>.table-hover</code></p> -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Order Number</th>
+                        <th>Product</th>
+                        <th>User</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Ordered Date</th>
+                        <th>Status</th>
+                        {% comment %} <th>Action</th> {% endcomment %}
+                    
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for order in orders %}
+                      <tr>
+                        <td>{{order.order_number}}</td>
+                        <td>{{order.product}} 
+                          <img src="/media/{{order.product.img1}}"> </img>
+                        </td>
+                        <td>{{order.user}}</td>
+                        <td>{{order.quantity}}</td>
+                        <td>{{order.total_price}}</td>
+                        <td>{{order.order_date }}</td>
+                        <td>{{order.status}}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+      <!-- partial:partials/_footer.html -->
+      {% include 'admin_temp/includes/footer.html' %}
+      <!-- partial -->
+    </div>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+<script>
+
+function DoAction(){
+
+  var f_date=$("input[name = 'from_date']").val();
+  var t_date=$("input[name = 'todate']").val();
+    window.location.href = "{% url 'generateSalesReport' %}" +'?date=' + f_date +','+t_date;
+}
+
+
+function validateDate(){
+
+  start = document.getElementById('start').value
+  document.getElementById('end').setAttribute("min",start);
+}
+
+function validateEnd(){
+  end = document.getElementById('end').value
+  document.getElementById('start').setAttribute("max", end);
+}
+
+  </script>
+{% endblock %}

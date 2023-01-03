@@ -1,0 +1,479 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Main Wrapper Start -->
+<div class="wrapper bg--shaft">
+
+<!-- navbar Start -->
+<div class ="container-fluid">
+    {% include 'user_temp/includes/navbar.html' %}
+</div>
+<!-- navbar End -->
+        <!-- Breadcumb area Start -->
+        <div class="breadcrumb-area">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12 text-center">
+                      <h1 class="page-title">Shop</h1>
+                      <ul class="breadcrumb justify-content-center">
+                          <li><a href="index.html">Home</a></li>
+                          <li class="current"><a href="shop.html">Shop</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Breadcumb area End -->
+
+      <!-- Main Content Wrapper Start -->
+      <div class="main-content-wrapper">
+          <div class="shop-area pt--40 pb--80 pt-md--30 pb-md--60">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-lg-9 order-lg-2 mb-md--30">
+                          <div class="row">
+                              <div class="col-12">
+                                  <!-- Refine Search Start -->
+                                  <div class="refine-search mb--30">
+                                      {% comment %} <h3>Refine Search</h3> {% endcomment %}
+                                      {% comment %} <ul class="cat-list mb--20">
+                                          <li><a href="shop.html">Diamonds (3)</a></li>
+                                          <li><a href="shop.html">For Mens's (15)</a></li>
+                                          <li><a href="shop.html">For Womens's (16)</a></li>
+                                          <li><a href="shop.html">Jewlery (3)</a></li>
+                                          <li><a href="shop.html">Watches (13)</a></li>
+                                      </ul> {% endcomment %}
+                                      <div>
+                                        <span class="mr-md-auto">
+                                          <b>
+                                            {{product_count}} items found
+                                          </b>
+                                        </span>
+                                      </div>
+                                  </div>
+                                  <!-- Refine Search End -->
+
+                                  <!-- Shop Toolbar Start -->
+                                  <div class="shop-toolbar">
+                                      <div class="product-view-mode" data-default="3">
+                                          {% comment %} <a class="grid-2" data-target="gridview-2" data-bs-toggle="tooltip" data-bs-placement="top" title="2">2</a>
+                                          <a class="active grid-3" data-target="gridview-3" data-bs-toggle="tooltip" data-bs-placement="top" title="3">3</a>
+                                          <a class="grid-4" data-target="gridview-4" data-bs-toggle="tooltip" data-bs-placement="top" title="4">4</a>
+                                          <a class="grid-5" data-target="gridview-5" data-bs-toggle="tooltip" data-bs-placement="top" title="5">5</a>
+                                          <a class="list" data-target="listview" data-bs-toggle="tooltip" data-bs-placement="top" title="5">List</a> {% endcomment %}
+                                      </div>
+                                      {% comment %} <span class="product-pages">Showing 1 to 9 of 11 (2 Pages)</span> {% endcomment %}
+                                      <div class="product-showing">
+                                          {% comment %} <label class="select-label">Show:</label>
+                                          <select class="short-select nice-select">
+                                              <option value="1">9</option>
+                                              <option value="1">1</option>
+                                              <option value="1">2</option>
+                                              <option value="1">3</option>
+                                              <option value="1">4</option>
+                                              <option value="1">5</option>
+                                              <option value="1">9</option>
+                                          </select> {% endcomment %}
+                                      </div>
+                                      <div class="product-short">
+                                        
+                                          {% comment %} <label class="select-label">Short By:</label>
+                                          <select class="short-select nice-select">
+                                              <option value="1">Relevance</option>
+                                              <option value="2">Name, A to Z</option>
+                                              <option value="3">Name, Z to A</option>
+                                              <option value="4">Price, low to high</option>
+                                              <option value="5">Price, high to low</option>
+                                          </select> {% endcomment %}
+                                      </div>
+                                  </div>
+                                  <!-- Shop Toolbar End -->
+                              </div>
+                          </div>
+                          
+                          <!-- Main Shop wrapper Start -->
+                          <div class="shop-product-wrap container row m-0 p-0">
+                              <div class="col-12 col-4 d-flex">
+                                {% for pd in products %}
+                                  <div class="mirora-product mb-md--10">
+                                      <div class="product-img">
+                                          <img src="\media\{{ pd.img1 }}" alt="Product" class="primary-image" />
+                                          <img src="\media\{{ pd.img2 }}" alt="Product" class="secondary-image" />
+                                          <div class="product-img-overlay">
+                                              <!-- <span class="product-label discount">
+                                                  -7%
+                                              </span> -->
+                                              <a href="{% url 'product_details' pd.id %}" class="btn btn-transparent btn-fullwidth btn-medium btn-style-1">Quick View</a>
+                                          </div>
+                                      </div>
+                                      <div class="product-content text-center">
+                                          <span>{{pd.subcategory}}</span>
+                                          <h4><a href="{% url 'product_details' pd.id %}">{{pd.product_name}}</a></h4>
+                                          <div class="product-price-wrapper">
+                                              <span class="money">{{pd.price}}</span>
+                                              <!-- <span class="product-price-old">
+                                                  <span class="money">$700.00</span>
+                                              </span> -->
+                                          </div>
+                                      </div>
+                                      <div class="mirora_product_action text-center position-absolute">
+                                          <div class="product-rating">
+                                              <!-- <span>
+                                                  <i class="fa fa-star theme-star"></i>
+                                                  <i class="fa fa-star theme-star"></i>
+                                                  <i class="fa fa-star theme-star"></i>
+                                                  <i class="fa fa-star theme-star"></i>
+                                                  <i class="fa fa-star"></i>
+                                              </span> -->
+                                          </div>
+                                          <p>
+                                            {{pd.product_description}}
+                                          </p>
+                                          <div class="product-action">
+                                              <!-- <a class="same-action" href="wishlist.html" title="wishlist">
+                                                  <i class="fa fa-heart-o"></i>
+                                              </a> -->
+                                              {% if pd.stock > 0  %}
+                                              <a class="add_cart cart-item action-cart" href="{% url 'add_to_cart' pd.id %}" title="Add to cart"><span>Add to cart</span></a>
+                                              {% else %}
+                                              <h4 style="color: red;">Out Of Stock!!</h4>
+                                              {% endif %}
+                                              <!-- <a class="same-action compare-mrg" data-bs-toggle="modal" data-bs-target="#productModal" href="compare.html">
+                                                  <i class="fa fa-sliders fa-rotate-90"></i>
+                                              </a> -->
+                                          </div>
+                                      </div>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                          </div>
+                          <!-- Main Shop wrapper End -->
+
+                          <!-- Pagination Start -->
+                          <!-- <div class="pagination-wrap mt--15 mt-md--10">
+                              <p class="page-ammount">Showing 1 to 9 of 15 (2 Pages)</p>
+                              <ul class="pagination">
+                                  <li><a href="#" class="first">|&lt;</a></li>
+                                  <li><a href="#" class="prev">&lt;</a></li>
+                                  <li><a href="#" class="current">1</a></li>
+                                  <li><a href="#">2</a></li>
+                                  <li><a href="#" class="next">&gt;</a></li>
+                                  <li><a href="#" class="next">&gt;|</a></li>
+                              </ul>
+                          </div> -->
+                          <!-- Pagination End -->
+                      </div>
+                      <div class="col-lg-1 order-lg-1">
+                          <aside class="shop-sidebar">
+                              <div class="search-filter">
+                                  <div class="filter-layered">
+                                      {% comment %} <h3 class="filter-heading">Layered Navigation</h3>
+                                      <ul class="filter-list">
+                                          <li><span>Diamonds</span><a href="#"><i class="fa fa-times-circle"></i></a></li>
+                                          <li><span>Brown</span><a href="#"><i class="fa fa-times-circle"></i></a></li>
+                                          <li><span>Christian Dior</span><a href="#"><i class="fa fa-times-circle"></i></a></li>
+                                      </ul> {% endcomment %}
+                                  </div>
+                                  <div class="filter-price">
+                                      {% comment %} <h3 class="filter-heading">Price</h3>
+                                      <ul class="filter-list"> {% endcomment %}
+                                          {% comment %} <li>
+                                              <div class="filter-input filter-radio">
+                                                  <input type="radio" name="pricerange" id="pricerange-1" checked>
+                                                  <label for="pricerange-1">$55 - $100 (3)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-radio">
+                                                  <input type="radio" name="pricerange" id="pricerange-2">
+                                                  <label for="pricerange-2">$55 - $200 (2)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-radio">
+                                                  <input type="radio" name="pricerange" id="pricerange-3">
+                                                  <label for="pricerange-3">$300 - $500 (6)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-radio">
+                                                  <input type="radio" name="pricerange" id="pricerange-4">
+                                                  <label for="pricerange-4">$700 - $1000 (2)</label>
+                                              </div>
+                                          </li>
+                                      </ul> {% endcomment %}
+                                  </div>
+                                  <div class="filter-categories">
+                                      {% comment %} <h3 class="filter-heading">Categories</h3>
+                                      <ul class="filter-list">
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="category1" id="category1" checked>
+                                                  <label for="category1">Category1</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="category2" id="category2">
+                                                  <label for="category2">Category2</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="category3" id="category3">
+                                                  <label for="category3">Category3</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="category4" id="category4">
+                                                  <label for="category4">Category4</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="category5" id="category5">
+                                                  <label for="category5">Category5</label>
+                                              </div>
+                                          </li>
+                                      </ul> {% endcomment %}
+                                  </div>
+                                  <div class="filter-color">
+                                      {% comment %} <h3 class="filter-heading">Color</h3>
+                                      <ul class="filter-list">
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="black" id="black">
+                                                  <label for="black">black (3)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="blue" id="blue">
+                                                  <label for="blue">blue (6)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="brown" id="brown">
+                                                  <label for="brown">brown (7)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="white" id="white">
+                                                  <label for="white">white (4)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="red" id="red">
+                                                  <label for="red">red (1)</label>
+                                              </div>
+                                          </li>
+                                      </ul> {% endcomment %}
+                                  </div>
+                                  <div class="filter-color">
+                                      {% comment %} <h3 class="filter-heading">Manufacturer</h3>
+                                      <ul class="filter-list">
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="ferragamo" id="ferragamo">
+                                                  <label for="ferragamo">ferragamo (11)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="hermes" id="hermes">
+                                                  <label for="hermes">hermes (9)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="louis" id="louis">
+                                                  <label for="louis">louis vuitton (11)</label>
+                                              </div>
+                                          </li>
+                                          <li>
+                                              <div class="filter-input filter-checkbox">
+                                                  <input type="checkbox" name="christian" id="christian">
+                                                  <label for="christian">Christian Dior (8)</label>
+                                              </div>
+                                          </li>
+                                      </ul> {% endcomment %}
+                                  </div>
+                              </div>
+                              <div class="banner-static">
+                                  {% comment %} <a href="#">
+                                      <img src="assets/img/banner/img-sidebar.jpg" alt="Banner">
+                                  </a> {% endcomment %}
+                              </div>
+                          </aside>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Main Content Wrapper Start -->
+
+      <!-- Footer Start -->
+     {% include 'user_temp/includes/footer.html' %}
+      <!-- Footer End -->
+
+      <!-- Scroll To Top Start -->    
+      <a class="scroll-to-top" href="#"><i class="fa fa-angle-double-up"></i></a>
+      <!-- Scroll To Top End -->
+
+      <!-- Popup Subscribe Box Start -->
+
+      <!-- <div class="popup-subscribe-box" id="subscribe-popup">
+          <div class="popup-subscribe-box-content">
+              <div class="popup-subscribe-box-body">
+                  <a href="#subscribe-popup" class="popup-close">close</a>
+                  <h3>NEWSLETTER</h3>
+                  <p>Subscribe to our newsletters now and stay up-to-date with new collections, the latest lookbooks and exclusive offers.</p>
+                  <form class="popup-subscribe-form validate" action="https://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&id=05d85f18ef" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" novalidate="">
+                      <input type="email" name="popup-subscribe-email" id="popup-subscribe-email" placeholder="Enter your email here...">
+                      <input type="submit" value="Subscribe" class="btn subscribe-btn btn-medium btn-style-1">
+                      <div class="form-group text-center mt--20">
+                          <input type="checkbox" name="hide-popup" id="hide-popup">
+                          <label for="hide-popup"> Don't show this popup again </label>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div> -->
+
+      <!-- Popup Subscribe Box End -->
+
+      <!-- Modal Start -->
+      <div class="modal fade product-modal" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">Close</span>
+              </button>
+              <div class="container">
+                  <div class="row">
+                      <div class="col-lg-5 col-md-6 mb-sm--20">
+                          <div class="tab-content product-thumb-large">
+                              <div id="thumb1" class="tab-pane active show fade">
+                                  <img src="assets/img/products/1-1-600x600.jpg" alt="product thumb">
+                              </div>
+                              <div id="thumb2" class="tab-pane fade">
+                                  <img src="assets/img/products/2-600x600.jpg" alt="product thumb">
+                              </div>
+                              <div id="thumb3" class="tab-pane fade">
+                                  <img src="assets/img/products/10-600x600.jpg" alt="product thumb">
+                              </div>
+                              <div id="thumb4" class="tab-pane fade">
+                                  <img src="assets/img/products/11-600x600.jpg" alt="product thumb">
+                              </div>
+                              <div id="thumb5" class="tab-pane fade">
+                                  <img src="assets/img/products/12-600x600.jpg" alt="product thumb">
+                              </div>
+                              <div id="thumb6" class="tab-pane fade">
+                                  <img src="assets/img/products/13-600x600.jpg" alt="product thumb">
+                              </div>
+                          </div>
+                          <div class="product-thumbnail">
+                              <div class="thumb-menu" id="modal-thumbmenu">
+                                  <div class="thumb-menu-item">
+                                      <a href="#thumb1" data-bs-toggle="tab" class="nav-link active">
+                                          <img src="assets/img/products/1-1-450x450.jpg" alt="product thumb">
+                                      </a>
+                                  </div>
+                                  <div class="thumb-menu-item">
+                                      <a href="#thumb2" data-bs-toggle="tab" class="nav-link">
+                                          <img src="assets/img/products/2-2-450x450.jpg" alt="product thumb">
+                                      </a>
+                                  </div>
+                                  <div class="thumb-menu-item">
+                                      <a href="#thumb3" data-bs-toggle="tab" class="nav-link">
+                                          <img src="assets/img/products/10-10-450x450.jpg" alt="product thumb">
+                                      </a>
+                                  </div>
+                                  <div class="thumb-menu-item">
+                                      <a href="#thumb4" data-bs-toggle="tab" class="nav-link">
+                                          <img src="assets/img/products/11-11-450x450.jpg" alt="product thumb">
+                                      </a>
+                                  </div>
+                                  <div class="thumb-menu-item">
+                                      <a href="#thumb5" data-bs-toggle="tab" class="nav-link">
+                                          <img src="assets/img/products/12-12-450x450.jpg" alt="product thumb">
+                                      </a>
+                                  </div>
+                                  <div class="thumb-menu-item">
+                                      <a href="#thumb6" data-bs-toggle="tab" class="nav-link">
+                                          <img src="assets/img/products/13-13-450x450.jpg" alt="product thumb">
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-7 col-md-6">
+                          <div class="modal-box product">
+                              <h3 class="product-title">Acer Aspire E 15</h3>
+                              <div class="ratings mb--20">
+                                  <i class="fa fa-star rated"></i>
+                                  <i class="fa fa-star rated"></i>
+                                  <i class="fa fa-star rated"></i>
+                                  <i class="fa fa-star rated"></i>
+                                  <i class="fa fa-star"></i>
+                              </div>
+                              <ul class="product-detail-list list-unstyled mb--20">
+                                  <li>Brand: <a href="#">Apple</a></li>
+                                  <li>Product Code: Watches</li>
+                                  <li>Reward Points: 600</li>
+                                  <li>Availability: In Stock</li>
+                              </ul>
+                              <div class="product-price border-bottom pb--20 mb--20">
+                                  <span class="regular-price">$100.50</span>
+                                  <span class="sale-price">$98.98</span>
+                              </div>
+                              <div class="product-options mb--20">
+                                  <h3>Available Options</h3>
+                                  <div class="form-group">
+                                      <label><sup>*</sup>Color Switch</label>
+                                      <select>
+                                          <option> --- Please Select --- </option>
+                                          <option>Black</option>
+                                          <option>Blue</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="product-action-wrapper mb--20">
+                                  <div class="product-action-top d-flex align-items-center mb--20">
+                                      <div class="quantity">
+                                          <span>Qty: </span>
+                                          <input type="number" class="quantity-input" name="qty" id="qty" value="1" min="1">
+                                      </div>
+                                      <button type="button" class="btn btn-medium btn-style-2 add-to-cart">
+                                          Add To Cart
+                                      </button>
+                                  </div>
+                                  <div class="product-action-bottom">
+                                      <a href="wishlist.html">+Add to wishlist</a>
+                                      <a href="compare.html">+Add to compare</a>
+                                  </div>
+                              </div>  
+                              <p class="product-tags">
+                                  Tags: <a href="shop.html">Sport</a>,
+                                  <a href="shop.html">Luxury</a>
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal End -->
+
+  </div>
+  <!-- Main Wrapper End -->
+
+  {% endblock %}

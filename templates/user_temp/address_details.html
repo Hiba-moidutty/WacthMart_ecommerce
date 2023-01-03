@@ -1,0 +1,112 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Main Wrapper Start -->
+<div class="wrapper bg--shaft">
+
+<!-- navbar Start -->
+<div class ="container-fluid">
+    {% include 'user_temp/includes/navbar.html' %}
+</div>
+<!-- navbar End -->
+
+      <!-- Breadcumb area Start -->
+      <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="page-title">My Address</h1>
+                    <ul class="breadcrumb justify-content-center">
+                        <li><a href="{% url 'user_home' %}">Home</a></li>
+                        <li class="current"><a href="{% url 'user_profile' %}">Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcumb area End -->
+
+    <!-- Main Content wrapper start -->
+
+    <section class="main-content-wrapper">
+        <div class="account-wrapper pt--40 pb--80 pt-md--30 pb-md--60">
+            <div class="container">
+                <div class="user-dashboard-tab">
+                    <div class="row">
+                        <div class="col-lg-2 mb-md--30">
+                            <div class="user-dashboard-tab__head nav flex-column" role="tablist" aria-orientation="vertical">
+                                <a class="nav-link " href="{% url 'user_profile' %}">My Profile</a>
+                               
+                                <a href="{% url 'order_details' %}" class="nav-link"> My Orders</a>
+
+                                <a class="nav-link active" href="{% url 'address_details' %}">Addressess </a>
+                                <a class="nav-link" href="{% url 'user_logout' %}">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="user-dashboard-tab__head nav flex-column" role="tablist" aria-orientation="vertical">
+                              
+                                    <div class="billing-address mb--20">
+                                        <h4>ADDRESS</h4>
+                                        {% for ad in address %}
+                                        <a class="nav-link ">{{ad.name}},<br>
+                                          {{ad.address_1}}<br>
+                                          {{ad.pincode}}<br>
+                                          {{ad.district}},{{ad.state}},{{ad.landark}}<br>
+                                          <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete_address{{ad.id}}">Delete</button>
+                                        </a>
+                                    </div>
+                                  
+                                    <!-- delete Modal -->
+                                    <div class="modal" id="delete_address{{ad.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" >
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            Are you sure you want to delete{{ad.name}}
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a href="{% url 'delete_address' ad.id %}">
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <!-- end for delete -->
+                                       
+                                    {% endfor %}
+                                  <a href="{% url 'add_address' %}"  class="btn btn-medium btn-style-1 expand_action">Add New Address</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>    
+        </div>
+    </section>
+
+    <!-- Main Content wrapper end -->
+
+
+     <!-- Footer Start  -->
+   <div class="container-fluid">
+    {% include 'user_temp/includes/footer.html'%}
+   </div>
+
+    <!-- Scroll To Top Start -->    
+    <a class="scroll-to-top" href="#"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Scroll To Top End -->
+</div>
+<!-- Main Wrapper End -->
+
+
+
+
+{% endblock %}

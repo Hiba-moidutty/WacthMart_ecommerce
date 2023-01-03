@@ -1,0 +1,209 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Main Wrapper Start -->
+<div class="wrapper bg--shaft">
+
+<!-- navbar Start -->
+<div class ="container-fluid">
+    {% include 'user_temp/includes/navbar.html' %}
+</div>
+<!-- navbar End -->
+
+        <!-- Breadcumb area Start -->
+        <div class="breadcrumb-area">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12 text-center">
+                      <h1 class="page-title">Cart</h1>
+                      <ul class="breadcrumb justify-content-center">
+                          <li><a href="index.html">Home</a></li>
+                          <li class="current"><a href="{%  url 'cart_view' %}">Cart</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Breadcumb area End -->
+
+      <!-- Main content wrapper start -->
+
+      <div class="main-content-wrapper">
+          <div class="cart-area pt--40 pb--80 pt-md--30 pb-md--60">
+              <div class="container">
+                  <div class="cart-wrapper bg--2 mb--80 mb-md--60 ">
+                    {% if not cart_items %}
+                    <h3 class="text-center my-4" >Your Shopping Cart Is Empty!!</h3>
+                    <br>
+                    <div class="text-center"> 
+                        <a href="{% url 'store' %}" class="btn btn primary">Continue Shopping>>></a>
+                    </div>
+                    {% else %}
+                      <div class="row">
+                          <div class="col-12">
+                              <!-- Cart Area Start -->
+                              <form action="" class="form cart-form">
+                                  <div class="cart-table table-content table-responsive">
+                                      <table class="table mb--30">
+                                          <thead>
+                                              <tr>
+                                                  <th>Remove</th>
+                                                  <th>Images</th>
+                                                  <th>Product</th>
+                                                  <th>Price</th>
+                                                  <th>Quantity</th>
+                                                  <th>Total Price</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                            {% for item in cart_items %}
+                                              <tr>
+                                                  <td><a class="delete" href="{% url 'remove_from_cart' item.product.id %}"><i class="fa fa-times"></i></a></td>
+                                                  <td>
+                                                      <a href="">
+                                                          <img src="{{ item.product.img1.url }}" alt="product">
+                                                      </a>
+                                                  </td>
+                                                  <td class="wide-column">
+                                                      <h3><a href="{% url 'product_details' item.product.id %}">{{item.product.product_name}}</a></h3>
+                                                  </td>
+                                                  <td class="cart-product-price"><strong>{{item.product.price}}</strong></td>
+                                                  <td class="d-flex justify-content-center">
+                                                     
+                                                        <a href="{% url 'remove_item_cart' item.product.id %}" class="btn btn-sm " type="button" id="button-minus"><i class="fa fa-minus"></i></a>
+                                                        <input  type="number" class="quantity-input mx-2"  value="{{ item.quantity }}">
+                                                        <a href="{% url 'add_to_cart' item.product.id %}"  class="btn btn-sm " type="button" id="button-plus"><i class="fa fa-plus"></i></button>
+                                                      
+                                                  </td>
+                                                  <td class="cart-product-price"><strong>{{item.sub_total}}</strong></td>
+                                              </tr>
+                                            {% endfor %}
+                                          </tbody>
+                                      </table>
+                                  </div>
+
+                                  <div class="row">
+                                      <div class="col-12">
+                                          <div class="apply-coupon-wrapper">
+                                              <div class="form__group d-flex justify-content-between align-items-center">
+                                                  <input type="text" name="coupon" id="coupon" class="form__input form__input--2" placeholder="Coupon Code">
+                                                  <button type="submit" class="btn btn-medium btn-style-3">Apply Coupon</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-12 text-md-right">
+                                          <div class="cart-btn-group">
+                                              <a href="{% url 'store' %}" class="btn btn-medium btn-style-3">Add  More</a>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </form>
+                              <!-- Cart Area End --> 
+                          </div>
+                      </div>
+                  </div>
+
+
+                  <div class="cart-page-total-wrapper">
+                      <div class="row justify-content-end">
+                          <div class="col-xl-6 col-lg-8 col-md-10">
+                              <div class="cart-page-total bg--dark-3">
+                                  <h3>Cart Totals</h3>
+                                  <div class="cart-calculator-table table-content table-responsive">
+                                      <table class="table">
+                                          <tbody>
+                                              <tr class="cart-subtotal">
+                                                  <th>Total Price</th>
+                                                  <td><span class="price-ammount">${{total}}</span></td>
+                                              </tr>
+                                              <tr class="shipping">
+                                                  <th>Tax</th>
+                                                  <td>
+                                                      tax included: <span class="price-ammount">${{tax}}</span>
+                                                      <a href="#" class="expand-calculator">Calculate Shipping</a>
+                                                      <form action="#" id="shipping-calculator" class="form shipping-form hide-in-default">
+                                                          <select name="shipping_country" id="shipping_country" class="form__input form__input--2">
+                                                              <option value="">Select a country…</option>
+                                                              <option value="AF">Afghanistan</option>
+                                                              <option value="AL">Albania</option>
+                                                              <option value="DZ">Algeria</option>
+                                                              <option value="AR">Argentina</option>
+                                                              <option value="AM">Armenia</option>
+                                                              <option value="AU">Australia</option>
+                                                              <option value="AT">Austria</option>
+                                                              <option value="AZ">Azerbaijan</option>
+                                                              <option value="BH">Bahrain</option>
+                                                              <option value="BD" selected="selected">Bangladesh</option>
+                                                              <option value="BD">Brazil</option>
+                                                              <option value="CN">China</option>
+                                                              <option value="EG">Egypt</option>
+                                                              <option value="FR">France</option>
+                                                              <option value="DE">Germany</option>
+                                                              <option value="HK">Hong Kong</option>
+                                                              <option value="HU">Hungary</option>
+                                                              <option value="IS">Iceland</option>
+                                                              <option value="IN">India</option>
+                                                              <option value="ID">Indonesia</option>
+                                                              <option value="IR">Iran</option>
+                                                              <option value="IQ">Iraq</option>
+                                                              <option value="IE">Ireland</option>
+                                                              <option value="IT">Italy</option>
+                                                              <option value="JP">Japan</option>
+                                                              <option value="KW">Kuwait</option>
+                                                              <option value="MY">Malaysia</option>
+                                                              <option value="MV">Maldives</option>
+                                                              <option value="MX">Mexico</option>
+                                                              <option value="MC">Monaco</option>
+                                                              <option value="NP">Nepal</option>
+                                                              <option value="RU">Russia</option>
+                                                              <option value="KR">South Korea</option>
+                                                              <option value="SS">South Sudan</option>
+                                                              <option value="ES">Spain</option>
+                                                              <option value="LK">Sri Lanka</option>
+                                                              <option value="SD">Sudan</option>
+                                                              <option value="SZ">Swaziland</option>
+                                                              <option value="SE">Sweden</option>
+                                                              <option value="CH">Switzerland</option>
+                                                              <option value="TN">Tunisia</option>
+                                                              <option value="TR">Turkey</option>
+                                                              <option value="UA">Ukraine</option>
+                                                              <option value="AE">United Arab Emirates</option>
+                                                              <option value="GB">United Kingdom (UK)</option>
+                                                              <option value="US">United States (US)</option>
+                                                          </select>
+                                                          <input type="text" name="shipping_state" id="shipping_state" class="form__input form__input--2" placeholder="State / Country">
+                                                          <input type="text" name="shipping_zip" id="shipping_zip" class="form__input form__input--2" placeholder="Postcode / Zip">
+                                                          <button type="submit" class="btn btn-medium btn-style-3">Update Totals</button>
+                                                      </form>
+                                                  </td>
+                                              </tr>
+                                              <tr class="cart-total">
+                                                  <th>GRAND TOTAL</th>
+                                                  <td><span class="price-ammount">{{grand_total}}</span></td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </div>
+                                  <a href="{% url 'checkout' %}" class="btn btn-medium btn-style-3">Proceed to Checkout</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  {% endif %}
+              </div>      
+          </div>
+      </div>
+
+      <!-- Main content wrapper end -->
+
+      <!-- Footer Start  -->
+   <div class="container-fluid">
+    {% include 'user_temp/includes/footer.html'%}
+   </div>
+
+    <!-- Scroll To Top Start -->    
+    <a class="scroll-to-top" href="#"><i class="fa fa-angle-double-up"></i></a>
+    <!-- Scroll To Top End -->
+
+{% endblock %}

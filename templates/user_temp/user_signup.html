@@ -1,0 +1,81 @@
+{% extends 'user_temp/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<!-- Main Wrapper Start -->
+<div class="wrapper bg--shaft">
+
+  <!-- navbar Start -->
+  <div class ="container-fluid">
+      {% include 'user_temp/includes/navbar.html'%}
+  </div>
+  <!-- navbar End -->
+
+  <!-- Main Wrapper Start -->
+  <div class="main-content-wrapper">
+    <div class="login-register-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <h2 class="heading-secondary mb--30">Register</h2>
+                    <div class="login-reg-box p-4 bg--2">
+                      <form action="user_signup" method="POST" autocomplete="off">
+                          {% csrf_token %}
+                          <div class="form__group mb--20">
+                            <label class="form__label" for="register_password">First Name<span>*</span></label>
+                            <!-- {{form.first_name|add_class:"form-control"}} -->
+                            <input type="text" name="first_name" id="first_name" class="form__input form__input--2" placeholder="First Name">
+                        </div>
+                        <div class="form__group mb--20">
+                            <label class="form__label" for="register_password">Last Name<span>*</span></label>
+                          <!-- {{form.last_name|add_class:"form-control"}} -->
+                          <input type="text" name="last_name" id="last_name" class="form__input form__input--2" placeholder="Last Name">
+                        </div>
+                        <div class="form__group mb--20">
+                            <label class="form__label" for="register_password">User Name<span>*</span></label>
+                            <!-- {{form.username|add_class:"form-control"}} -->
+                            <input type="text" name="username" id="username" class="form__input form__input--2" placeholder="Username">
+                          </div>
+                            <div class="form__group mb--20">
+                                <label class="form__label" for="register_password">Email<span>*</span></label>
+                              <!-- {{form.email|add_class:"form-control"}} -->
+                              <input type="email" name="email" id="email" class="form__input form__input--2" placeholder="Email">
+                            </div>
+                            <div class="form__group mb--20">
+                                <label class="form__label" for="register_password">Phone Number<span>*</span></label>
+                              <!-- {{form.phone_number|add_class:"form-control"}} -->
+                              <input type="text" name="phone_number" id="phone_number" class="form__input form__input--2" placeholder="Phone Number">
+                          </div>
+                            <div class="form__group mb--20">
+                                <label class="form__label" for="register_password">Password<span>*</span></label>
+                              <!-- {{form.password1|add_class:"form-control"}} -->
+                              <input type="password" name="password" id="password" class="form__input form__input--2" placeholder="Password">
+                            </div>
+                            <div class="form__group mb--20">
+                                <label class="form__label" for="register_password">Confirm Password<span>*</span></label>
+                              <!-- {{form.password2|add_class:"form-control"}} -->
+                              <input type="password" name="password1" id="password" class="form__input form__input--2" placeholder=" Confirm Password">
+                          </div>
+                            <div class="form__group">
+                                <button type="submit" class="btn btn-5 btn-style-2">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+<!-- Main Wrapper End -->
+
+<!-- Footer Start -->
+
+<div class ="container-fluid">
+  {% include 'user_temp/includes/footer.html' %}
+</div>
+
+<!-- Footer End -->
+</div>
+
+{% endblock %}

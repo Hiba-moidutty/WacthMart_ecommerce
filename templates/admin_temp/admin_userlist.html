@@ -1,0 +1,115 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h3 class="page-title">User Management</h3>
+          <nav aria-label="breadcrumb">
+            <!-- <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Tables</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol> -->
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-lg grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">User List</h4>
+                <!-- <p class="card-description"> Add class <code>.table-hover</code></p> -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>UserName</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for user in data %}
+                      <tr>
+                        <td>{{user.username}}</td>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.phone_number}}</td>
+                        <td>
+
+                          {% if user.blocked is True %}
+                            <button  data-toggle="modal" data-target="#block_user{{user.id}}" type="button" class="btn btn-danger mx-2">Unblock</button></a></td>
+                          {% else %}
+                            <button data-toggle="modal" data-target="#unblock_user{{user.id}}" type="submit" class="btn btn-info ">Block</button> </a>
+                          {% endif %}
+                         
+                        </td>
+                      </tr>
+                      <!-- for user block pop up-->
+                      <div class="modal" id="block_user{{user.id}}" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Status</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Are you sure you want unblock {{user.username}} ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                              <a href="{% url 'block_user' user.id %}">
+                               <button type="button" class="btn btn-primary">Unblock</button>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end for block -->
+
+                      <!-- for user unblock pop up -->
+                      <div class="modal" id="unblock_user{{user.id}}" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Status</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Are you sure you want block {{user.username}} ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                              <a href="{% url 'block_user' user.id %}">
+                               <button type="button" class="btn btn-primary">Block</button>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end for unblock -->
+
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+      <!-- partial:partials/_footer.html -->
+      {% include 'admin_temp/includes/footer.html' %}
+      <!-- partial -->
+    </div>
+</div>
+{% endblock %}

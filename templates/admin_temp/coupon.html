@@ -1,0 +1,97 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h3 class="page-title">Available Coupons</h3>
+          <nav aria-label="breadcrumb">
+            <nav aria-label="breadcrumb">
+              <a href="{% url 'add_product'%}">
+              <button type="button" class="btn btn-outline-success btn-fw">Add Coupon</button>
+            </a>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-lg grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Coupons</h4>
+                
+                <!-- <p class="card-description"> Add class <code>.table-hover</code></p> -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>SL No.</th>
+                        <th>Coupon Name</th>
+                        <th>Coupon Code</th>
+                        <th>Discount</th>
+                        <th>Valid From</th>
+                        <th>Valid To</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for pd in products %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{pd.product_name}}</td>
+                        <td>{{pd.category}}</td>
+                        <td>{{pd.subcategory}}</td>
+                        <td>
+                          <img src="{{pd.img1.url}}">
+                        </td>
+                        <td>{{pd.price}}</td>
+                        <td>{{pd.stock}}</td>
+                        <td>{{pd.added_date}}</td>
+                        <td>
+                          <a href="{% url 'edit_product' pd.id %}">
+                            <button type="submit" class="btn btn-info  mx-2">Edit</button> 
+                          </a>
+
+                          <button data-toggle="modal" data-target="#delete_product{{pd.id}}" type="submit" class="btn btn-danger ">Delete</button>
+                          
+                        </td>
+                      </tr>
+                      <!-- for user delete -->
+                      <div class="modal" id="delete_product{{pd.id}}" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Delete</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Are you sure you want delete {{pd.product_name}} ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                              <a href="{% url 'delete_product' pd.id %}">
+                               <button type="button" class="btn btn-danger">Delete</button>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end for delete -->
+                      {% endfor %}
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+      <!-- partial:partials/_footer.html -->
+      {% include 'admin_temp/includes/footer.html' %}
+      <!-- partial -->
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial --> 
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h3 class="page-title">Category Management</h3>
+          <nav aria-label="breadcrumb">
+            <a href="{% url 'add_category'%}">
+            <button type="button" class="btn btn-outline-success btn-fw">Add Category</button>
+          </a>
+            <!-- <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Tables</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol> -->
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-lg grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Category List</h4>
+                <!-- <p class="card-description"> Add class <code>.table-hover</code></p> -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>SL NO</th>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for cat in categories %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{cat.category_name}}</td>
+                        <td>{{cat.description}}</td>
+                        <td>
+                          <a href="{% url 'edit_category' cat.id %}">
+                            <button type="submit" class="btn btn-info  mx-2">Edit</button> 
+                          </a>
+                            <button data-toggle="modal" data-target="#delete_category{{cat.id}}" type="submit" class="btn btn-danger ">Delete</button>
+                         </td>
+                          
+                        </td>
+                      </tr>
+
+                      <!-- for user block -->
+                      <div class="modal" id="delete_category{{cat.id}}" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Delete</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Are you sure you want delete {{cat.category_name}} ?</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                              <a href="{% url 'delete_category' cat.id %}">
+                               <button type="button" class="btn btn-danger">Delete</button>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end for block -->
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+      <!-- partial:partials/_footer.html -->
+      {% include 'admin_temp/includes/footer.html' %}
+      <!-- partial -->
+    </div>
+</div>
+{% endblock %}
