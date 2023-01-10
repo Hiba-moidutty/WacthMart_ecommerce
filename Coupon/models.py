@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator, MaxLengthValidator
 
 
 class Coupon(models.Model):
+  coupon_name     = models.CharField(max_length=100,null=True)
   coupon_code     = models.CharField(max_length=200)
   coupon_limit    = models.IntegerField()
   validity_upto   = models.DateField()

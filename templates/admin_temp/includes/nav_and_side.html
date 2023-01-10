@@ -8,7 +8,7 @@
       <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="{% static 'admin_static/images/logo-mini.svg' %}" alt="logo" /></a>
     </div>
     <ul class="nav">
-      <li class="nav-item profile">
+      {% comment %} <li class="nav-item profile">
         <div class="profile-desc">
           <div class="profile-pic">
             <div class="count-indicator">
@@ -56,7 +56,7 @@
             </a>
           </div>
         </div>
-      </li>
+      </li> {% endcomment %}
       <li class="nav-item nav-category">
         <span class="nav-link">Navigation</span>
       </li>
@@ -115,7 +115,7 @@
         </a>
         <div class="collapse" id="ui-basic1">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="">Category Offer</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'category_offer' %}">Category Offer</a></li>
             {% comment %} <li class="nav-item"> <a class="nav-link" href="">Sub-Category Offer</a></li> {% endcomment %}
             <li class="nav-item"> <a class="nav-link" href="{% url 'product_offer' %}">Product Offer</a></li>
             <li class="nav-item"> <a class="nav-link" href="{% url 'coupon' %}">Coupons</a></li>
@@ -124,40 +124,7 @@
           </ul>
         </div>
       </li>
-      <!-- <li class="nav-item menu-items">
-        <a class="nav-link" href="pages/icons/mdi.html">
-          <span class="menu-icon">
-            <i class="mdi mdi-contacts"></i>
-          </span>
-          <span class="menu-title">Icons</span>
-        </a>
-      </li> -->
-      <!-- <li class="nav-item menu-items">
-        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-          <span class="menu-icon">
-            <i class="mdi mdi-security"></i>
-          </span>
-          <span class="menu-title">User Pages</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="auth">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item menu-items">
-        <a class="nav-link" href="http://www.bootstrapdash.com/demo/corona-free/jquery/documentation/documentation.html">
-          <span class="menu-icon">
-            <i class="mdi mdi-file-document-box"></i>
-          </span>
-          <span class="menu-title">Documentation</span>
-        </a>
-      </li> -->
+      
       <li class="nav-item menu-items">
         <a class="nav-link" href="{% url 'admin_logout' %}">
           <span class="menu-icon">
@@ -182,11 +149,9 @@
         </button>
         <ul class="navbar-nav w-100">
           <li class="nav-item w-100">
-            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-              <input type="text" class="form-control" placeholder="Search products">
-            </form>
+            <h3>Helloo....</h3>
           </li>
-        </ul>
+        </ul> 
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown d-none d-lg-block">
             <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">View Reports</a>
@@ -204,7 +169,7 @@
                 </div>
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
+              {% comment %} <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-dark rounded-circle">
                     <i class="mdi mdi-file-outline text-primary"></i>
@@ -213,15 +178,15 @@
                 <div class="preview-item-content">
                   <p class="preview-subject ellipsis mb-1">Product Report</p>
                 </div>
-              </a>
+              </a> {% endcomment %}
               <div class="dropdown-divider"></div>
           </li>
-          <li class="nav-item nav-settings d-none d-lg-block">
+          {% comment %} <li class="nav-item nav-settings d-none d-lg-block">
             <a class="nav-link" href="#">
               <i class="mdi mdi-view-grid"></i>
             </a>
-          </li>
-          <li class="nav-item dropdown border-left">
+          </li> {% endcomment %}
+          {% comment %} <li class="nav-item dropdown border-left">
             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <i class="mdi mdi-email"></i>
               <span class="count bg-success"></span>
@@ -261,8 +226,8 @@
               <div class="dropdown-divider"></div>
               <p class="p-3 mb-0 text-center">4 new messages</p>
             </div>
-          </li>
-          <li class="nav-item dropdown border-left">
+          </li> {% endcomment %}
+          {% comment %} <li class="nav-item dropdown border-left">
             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
               <i class="mdi mdi-bell"></i>
               <span class="count bg-danger"></span>
@@ -308,7 +273,7 @@
               <div class="dropdown-divider"></div>
               <p class="p-3 mb-0 text-center">See all notifications</p>
             </div>
-          </li>
+          </li> {% endcomment %}
           <li class="nav-item dropdown">
             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
               <div class="navbar-profile">
@@ -331,19 +296,21 @@
                 </div>
               </a>
               <div class="dropdown-divider"></div>
-              <!-- <a class="dropdown-item preview-item">
+                {% comment %} <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-dark rounded-circle">
                     <i class="mdi mdi-logout text-danger"></i>
                   </div>
                 </div>
                 <div class="preview-item-content">
-                  <a href="{% url 'admin_logout' %}" class='btn btn-secondary'>Log out</a>
+                  <a class="nav-link" href="{% url 'admin_logout' %}">
+                    <span class="preview-subject mb-1">Logout</span>
+                  </a>
                 </div>
-              </a> -->
-              <div class="dropdown-divider"></div>
+              </a>   {% endcomment %}
+              {% comment %} <div class="dropdown-divider"></div>
               <p class="p-3 mb-0 text-center">Advanced settings</p>
-            </div>
+            </div> {% endcomment %}
           </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">

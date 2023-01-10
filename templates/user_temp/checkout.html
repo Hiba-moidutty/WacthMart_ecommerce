@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block content %}
+<style>
+    body {
+        background-color: #242424;
+      }
+    
+  </style>
 <!-- Main Wrapper Start -->
 <div class="wrapper bg--shaft">
 
@@ -38,42 +44,21 @@
                   <div class="user-actions">
                       <div class="row">
                           <div class="col-12">
-                              <div class="user-actions__single user-actions__login">
-                                  <h3><i class="fa fa-cube"></i> Returning Customer? <span class="expand_action" data-attr="#checkout_login">Click here to login.</span></h3>
-                                  <div id="checkout_login" class="user-actions__form hide-in-default">
-                                      <div class="checkout-login__info">
-                                          <p class="checkout-login__text">
-                                              If you have shopped with us before, please enter your details in the boxes below. If you are a new customer, please proceed to the Billing & Shipping section.
-                                          </p>
-                                          <form class="form quick-login-form">
-                                              <div class="form__group">
-                                                  <label class="form__label" for="login_email">Username Or Email <sup>*</sup></label>
-                                                  <input type="email" name="login_email" id="login_email" class="form__input form__input--2">
-                                              </div>
-                                              <div class="form__group">
-                                                  <label class="form__label" for="login_password">Password <sup>*</sup></label>
-                                                  <input type="password" name="login_password" id="login_password" class="form__input form__input--2">
-                                              </div>
-                                              <div class="form__group d-flex align-items-center">
-                                                  <button type="submit" class="btn btn-style-3">Login</button>
-                                                  <div class="custom-checkbox ml--20">
-                                                      <input type="checkbox" name="sessionStore" id="sessionStore" class="form__checkbox">
-                                                      <label for="sessionStore" class="form__checkbox--label">Remember me</label>
-                                                  </div>
-                                              </div>
-                                              <a href="#" class="forgot-pass">Forgot your password?</a>
-                                          </form>
-                                      </div>
-                                  </div>
-                              </div>
+                            
                               <div class="user-actions__single user-actions__coupon">
                                   <h3><i class="fa fa-cube"></i> Have A Coupon? <span class="expand_action" data-attr="#coupon_info">Click Here To Enter Your Code.</span></h3>
                                   <div id="coupon_info" class="user-actions__form user-actions--coupon hide-in-default">
-                                      <form action="#" class="form">
-                                          <div class="form__group d-flex">
-                                              <input type="text" name="coupon" id="coupon" class="form__input form__input--2 form__input--w285 mr--20" placeholder="Coupon Code">
-                                              <button type="submit" class="btn btn-medium btn-style-3">Apply Coupon</button>
-                                          </div>
+                                      <form action="{% url 'apply_coupon' %}" method="POST" class="form">
+                                          {% csrf_token %}
+                                        <div class="form__group d-flex">
+                                              <input type="text" name="coupon_code" id="coupon" class="form__input form__input--2 form__input--w285 mr--20" placeholder="Coupon Code">
+                                              <input type="hidden" name="total" value="{{total}}">
+                                              {% if applied %}
+                                              <button onclick = removecoupon() class="btn btn-medium btn-style-3">Remove Coupon</button>
+                                              {% else %}
+                                              <button type="submit" class="btn btn-medium btn-style-3">Redeem</button>
+                                              {% endif %}
+                                        </div>
                                       </form>
                                   </div>
                               </div>
@@ -280,26 +265,20 @@
                                           <tfoot>
                                               <tr class="cart-subtotal">
                                                   <th>Cart Subtotal</th>
-                                                  <td>${{total}}</td>
+                                                  <td>₹{{total}}</td>
                                               </tr>
                                               <tr class="shipping">
                                                   <th>Tax Included</th>
-                                                  <td>
-                                                      <div class="shipping-method">
-                                                          <div class="custom-radio">
-                                                              <input type="radio" name="shipping_method" id="flat_rate" >
-                                                              <label for="flat_rate">${{tax}}</label>
-                                                          </div>
-                                                          {% comment %} <div class="custom-radio">
-                                                              <input type="radio" name="shipping_method" id="free_shipping">
-                                                              <label for="free_shipping">Free Shipping</label>
-                                                          </div> {% endcomment %}
-                                                      </div>
+                                                  <td>₹{{tax}}
                                                   </td>
                                               </tr>
+                                              <tr class="cart-subtotal">
+                                                <th>Coupon Added</th>
+                                                <td>₹{{grand_total}}</td>
+                                            </tr>
                                               <tr class="order-total">
                                                   <th>Order Total</th>
-                                                  <td><span class="order-total-ammount">${{grand_total}}</span></td>
+                                                  <td><span class="order-total-ammount">₹{{grand_total}}</span></td>
                                               </tr>
                                           </tfoot>
                                       </table>
@@ -369,9 +348,9 @@
 <!-- Main content wrapper end -->
 
    <!-- Footer Start  -->
-   <div class="container-fluid">
+  
     {% include 'user_temp/includes/footer.html'%}
-   </div>
+ 
 
     <!-- Scroll To Top Start -->    
     <a class="scroll-to-top" href="#"><i class="fa fa-angle-double-up"></i></a>
@@ -384,7 +363,8 @@
 <script defer src="https://cdn.crop.guide/loader/l.js?c=FWCZMT"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script src="https://www.paypal.com/sdk/js?client-id=AZ54SF_9XhjbZoC2GRn4bZUwGSJmxPhMlHREiWidNqm9zMfdFLRW4LCvxjAoXx1FMusHTxTKGolAyCaP&currency=USD"></script>
@@ -509,6 +489,34 @@
         }
         
     }).render('#paypal-button-container');
+
+    </script>
+    
+    <script>
+        function removecoupon(){
+            event.preventDefault()
+
+            Swal.fire({
+                title : 'Are you sure you want to remove coupon?',
+                text:'You can reuse after removing the coupon!',
+                icon:'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor:'#d33',
+                confirmButtonText:'Yes'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    $.ajax({
+                        method:"GET",
+                        url:"{% url 'delete_coupon' %}",
+                        data:{'1':1},
+                        success: function(response){
+                            window.location="{% url 'checkout' %}"                            
+                        }
+                    });
+                }
+            })
+        }
 
     </script>
 

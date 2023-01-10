@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.core.paginator import Paginator
 from django.http import HttpResponse 
 from django.contrib import messages
 from django.views.decorators.cache import never_cache
@@ -87,7 +88,10 @@ def admin_logout(request):
 def admin_userlist(request):
   if request.user.is_superuser:
     data = Account.objects.all().order_by('-id')
-    context ={'data':data}
+    page = Paginator(data,4)
+    page_list = request.GET.get('page')
+    page = page.get_page(page_list)
+    context ={'data':page}
     return render(request,'admin_temp/admin_userlist.html',context)
   return redirect('admin_login')
 
@@ -148,7 +152,10 @@ def delete_category(request,id):
 @login_required(login_url='admin_login')
 def sub_category(request):
   subcategory_name=SubCategory.objects.all()
-  context={'subcategories':subcategory_name}
+  page = Paginator(subcategory_name,3)
+  page_list = request.GET.get('page')
+  page = page.get_page(page_list)
+  context={'subcategories': page}
   return render(request,'admin_temp/sub_category.html',context) 
 
 
@@ -227,7 +234,10 @@ def delete_subcategory(request,id):
 def admin_productlist(request):
   if request.user.is_superuser:
     data = Product.objects.all().order_by('-id')
-    context = {'products':data}
+    page = Paginator(data,2)
+    page_list = request.GET.get('page')
+    page = page.get_page(page_list)
+    context = {'products':page}
     return render(request,'admin_temp/admin_productlist.html',context)
   return redirect('add_product')
 
@@ -347,19 +357,21 @@ def delete_product(request,id):
 @login_required(login_url="admin_login")
 def sales_report(request):
   orders = Order.objects.annotate(sub_total =F('product__price')*F('quantity')).order_by("-order_date")
-  
+  print(orders,'rrrrrrrrrrrrrrrr')
   if request.GET.get('Month') != "0":
     currentMonth = datetime.now().month
     month1 = request.GET.get('Month')
     if month1 is not None and month1 !="0":
       month = int(month1)
-      orders = Order.objects.filter(order_date__month=month).annotate(sub_total =F('product__price')*F('quantiy')).order_by("-order_date")
+      orders = Order.objects.filter(order_date__month=month).annotate(sub_total =F('product__price')*F('quantity')).order_by("-order_date")
     #   return render(request,"admin_temp/sales_report.html",{
     #   "orders" : orders
     # })
   elif request.GET.get('from_date'):
     from_date  = request.GET.get('from_date')
+    print(from_date,'jjjjjjjjjjjjjjjj')
     to_date  = request.GET.get('to_date')
+    print(to_date,'iiiiiiii')
 
     if not from_date or not to_date:
       messages.info(request,"Please fill from and to date")
@@ -368,25 +380,30 @@ def sales_report(request):
     todate = datetime.strptime(to_date,"%Y-%m-%d")
     to__date = todate + timedelta(1)
     orders = Order.objects.filter(order_date__range =[from_date,to__date]).annotate(sub_total =F('product__price')*F('quantity')).order_by("-order_date")
+  page      = Paginator(orders,5)
+  page_list = request.GET.get('page')
+  page      = page.get_page(page_list)
   return render(request,"admin_temp/sales_report.html",{
-      "orders" : orders
+      "orders" :page
     })
+
 
 
 def generateSalesReport(request):
   to_date = request.GET.get('date','')
   from_date1 = to_date.split(",")[0]
   to_date1 = to_date.split(",")[1]
-
+  
   if to_date1 is '' or from_date1 is '':
-    messages.info(request,"Please fill from and to date to export")
+    messages.info(request,"Please fill from and to date to export pdf")
     return redirect(request.META.get('HTTP_REFERER'))
   
   t_date = datetime.strptime(to_date1,"%Y-%m-%d")
   to_date11 = t_date + timedelta(1)
 
   try:
-    orders = Order.objects.filter(order_date__range=[from_date1,to_date1])
+    orders = Order.objects.filter(order_date__range=[from_date1,to_date11]).annotate(sub_total = F('product__price')*F('quantity')).order_by("-order_date")
+    print(orders,'yyyyyyyyyyyyyyyyyyyyyy')
     total_rev = 0
     for i in orders:
       total_rev += i.sub_total
@@ -398,8 +415,9 @@ def generateSalesReport(request):
         'User' : i.user.first_name,
         'Product' : i.product.product_name,
         'Quantity' : i.quantity,
+        'Price'  : i.product.price,
         'Revenue' : i.sub_total,
-              },
+        },
       Report.append(item)
 
   except:

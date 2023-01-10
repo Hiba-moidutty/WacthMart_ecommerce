@@ -29,5 +29,7 @@ urlpatterns = [
     path('userprofile/',include('userprofile.urls')),
     path('Offer/',include('Offer.urls')),
     path('Coupon/',include('Coupon.urls')),
+    path('Variation/',include('Variation.urls')),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

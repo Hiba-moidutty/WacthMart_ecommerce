@@ -5,6 +5,7 @@ from cart.models import CartItem
 from category.models import Product
 from django.http import JsonResponse
 from .models import Order
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 # from userprofile.views import user_profile
@@ -145,7 +146,10 @@ def order_details(request):
 @login_required(login_url='admin_login')
 def admin_orderlist(request):
   orders = Order.objects.all().order_by('-id')
-  return render(request,'admin_temp/orderlist.html',{'orders':orders})
+  page = Paginator(orders,5)
+  page_list = request.GET.get('page')
+  page = page.get_page(page_list)
+  return render(request,'admin_temp/orderlist.html',{'orders':page})
 
 
 

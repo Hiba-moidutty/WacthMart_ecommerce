@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'userprofile',
     'Offer',
     'Coupon',
+    'Variation',
+
 
 ]
 

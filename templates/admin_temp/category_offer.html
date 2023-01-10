@@ -1,0 +1,108 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h3 class="page-title">Offer Management</h3>
+            {% comment %} <nav aria-label="breadcrumb">
+              <a href="">
+              <button type="button" class="btn btn-outline-success btn-fw">Add Offer</button>
+            </a>
+          </nav> {% endcomment %}
+        </div>
+        <div class="row">
+          <div class="col-lg grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Category Offer</h4>
+                
+                <!-- <p class="card-description"> Add class <code>.table-hover</code></p> -->
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>SL No.</th>
+                        <th>Category Name</th>
+                        <th>Discount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for cat in category %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{cat.category_name}}</td>
+                        
+                        {% comment %} <td>{{pd.category}}</td> {% endcomment %}
+                        {% comment %} <td>{{pd.subcategory}}</td> {% endcomment %}
+                        <td>{{cat.discount}}%</td>
+                        <td>
+                          {% if cat.discount is not None and cat.discount is not 0 %}
+                          <button onclick = del_category_offer({{cat.id}}) type="button" class="btn btn-danger">Delete</button>
+                            {% else %}
+                            <a href="{% url 'add_category_offer' cat.id %}">
+                              <button type="submit" class="btn btn-info  mx-2">Add Offer</button> 
+                            </a> 
+                        </td>
+                        {% endif %}
+                      </tr>
+                      <!-- for user delete -->
+                      <!-- end for delete -->
+                      {% endfor %}
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+      <!-- partial:partials/_footer.html -->
+      {% include 'admin_temp/includes/footer.html' %}
+      <!-- partial -->
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script> 
+  function del_category_offer(id){
+    var url ="{% url 'delete_category_offer' %}"
+    console.log(url,'iiiiiiiiiiiiiiiiiiiiiii')
+    Swal.fire({
+      title:'Are you sure you want to Delete the Offer?',
+      icon:'warning',
+      showCancelButton: true,
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor:'#d33',
+      confirmButtonText:'Yes'
+    }).then((result) =>{
+      if (result.isConfirmed){
+        $.ajax({
+          type :"GET",
+          url :url,
+          data : {"id" : id},
+          success : function(response){
+            window.location.href="{% url 'category_offer' %}" ;
+
+          },
+          error: function(){
+            Swal.fire({
+              icon : 'error',
+              title: 'Oops...',
+              text:'!',
+            })
+          }
+        });
+      }
+    })
+  }
+</script>
+{% endblock %}

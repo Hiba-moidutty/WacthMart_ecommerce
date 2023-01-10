@@ -31,6 +31,7 @@
                         <th>User</th>
                         <th>Product</th>
                         <th>Quantity</th>
+                        <th>Price</th>
                         <th>Revenue</th>
                   
                       </tr>
@@ -40,11 +41,12 @@
                       {% for r in Report %}
                          {% for j in r %}
                       <tr>
-                        <td>{{r.Date}}</td>
-                        <td>{{r.User}}</td>
-                        <td>{{r.Product}}</td>
-                        <td>{{r.Quantity}}</td>
-                        <td>{{r.Revenue}}</td>
+                        <td>{{j.Date}}</td>
+                        <td>{{j.User}}</td>
+                        <td>{{j.Product}}</td>
+                        <td>{{j.Quantity}}</td>
+                        <td>{{j.Price}}</td>
+                        <td>{{j.Revenue}}</td>
                       </tr>
                         {% endfor %}
                       {% endfor %}

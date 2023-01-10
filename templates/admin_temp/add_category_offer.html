@@ -1,0 +1,67 @@
+{% extends 'admin_temp/adbase.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container-scroller">
+  <!-- partial:partials/_sidebar.html -->
+  {% include 'admin_temp/includes/nav_and_side.html' %}
+    <!-- partial  end --> 
+
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          {% comment %} <h3 class="page-title">Product Management</h3> {% endcomment %}
+        </div>
+        <div class="row">
+          <div class="col-md grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Add New Product Offer</h4>
+                <!-- <p class="card-description"> Horizontal form layout </p> -->
+                <form action="{% url 'add_category_offer' category.id %} " method="POST" autocomplete="off" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group row">
+                    <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Product Name</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control"  name='product_name' value={{category.category_name}} placeholder="Product Name">
+                      <!-- {{form.product_name|add_class:"form-control"}} -->
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Discount %</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name='discount' id="exampleInputName1" min = "0" max="70" placeholder="0-70 in Percentage">
+                      <!-- {{form.product_description|add_class:"form-control"}} -->
+                    </div>
+                  </div>
+                  {% comment %} <div class="form-group row">
+                    <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Price</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name='price' id="exampleInputName1" placeholder="Price">
+                     
+                    </div>
+                  </div> {% endcomment %}
+                  <button type="submit" class="btn btn-primary mr-2">Add</button>
+                  <a href="{% url 'category_offer' %}" class="btn btn-info">Cancel</a>
+                </form>
+              </div>
+            </div>
+          </div>
+    </div>
+    <!-- partial:partials/_footer.html -->
+    {% include 'admin_temp/includes/footer.html' %}
+    <!-- partial -->
+</div>
+<!-- <script src="jquery-3.6.1.min.js"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.1.js" ></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script defer src="https://cdn.crop.guide/loader/l.js?c=FWCZMT"></script>
+<!-- 
+<!-- <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script> -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+{% endblock %}
+

@@ -25,7 +25,17 @@
           </div>
       </div>
       <!-- Breadcumb area End -->
-
+    <section class="section_pagetop ">
+        <div class="container">
+            <div><hr></div>
+            {% if 'search' in request.path %}
+            <h2 class="title-page">Top Results</h2> 
+            {% else %}
+            <h2 class="title-page">Store</h2>
+            {% endif %}
+            <div><hr></div>
+        </div>
+    </section>
       <!-- Main Content Wrapper Start -->
       <div class="main-content-wrapper">
           <div class="shop-area pt--40 pb--80 pt-md--30 pb-md--60">
@@ -101,9 +111,15 @@
                                           <img src="\media\{{ pd.img1 }}" alt="Product" class="primary-image" />
                                           <img src="\media\{{ pd.img2 }}" alt="Product" class="secondary-image" />
                                           <div class="product-img-overlay">
-                                              <!-- <span class="product-label discount">
-                                                  -7%
-                                              </span> -->
+                                            {% if pd.offer is not 0 %}
+                                            <span class="product-label discount">
+                                                {{pd.offer}}%
+                                            </span>
+                                            {% elif pd.category_offer is not 0 %}
+                                            <span class="product-label discount">
+                                                {{pd.category_offer}}%
+                                            </span>
+                                            {% endif %}
                                               <a href="{% url 'product_details' pd.id %}" class="btn btn-transparent btn-fullwidth btn-medium btn-style-1">Quick View</a>
                                           </div>
                                       </div>
@@ -111,11 +127,24 @@
                                           <span>{{pd.subcategory}}</span>
                                           <h4><a href="{% url 'product_details' pd.id %}">{{pd.product_name}}</a></h4>
                                           <div class="product-price-wrapper">
-                                              <span class="money">{{pd.price}}</span>
+                                            
+                                               {% comment %} <span class="money">{{pd.price}}</span>  {% endcomment %}
+                                              {% if pd.offer_price is not None and pd.offer_price is not 0 or pd.category.discount is not 0 and pd.category_offer is not None %}
+
+
+                                               <span class="money" style="text-decoration: line-through;">₹ {{pd.price}}</span><br>
+                                                 <span class="money">₹ {{pd.offer_price}}.0</span>
+
+                                               {% else %}
+                                                   <br>
+                                                     <span class="money">₹ {{pd.price}}.0</span>
+
+                                               {% endif %}
                                               <!-- <span class="product-price-old">
                                                   <span class="money">$700.00</span>
                                               </span> -->
                                           </div>
+
                                       </div>
                                       <div class="mirora_product_action text-center position-absolute">
                                           <div class="product-rating">
@@ -134,8 +163,8 @@
                                               <!-- <a class="same-action" href="wishlist.html" title="wishlist">
                                                   <i class="fa fa-heart-o"></i>
                                               </a> -->
-                                              {% if pd.stock > 0  %}
-                                              <a class="add_cart cart-item action-cart" href="{% url 'add_to_cart' pd.id %}" title="Add to cart"><span>Add to cart</span></a>
+                                              {% if pd.stock %}
+                                              <a class="add_cart cart-item action-cart" onclick=addcat({{pd.id}}) title="Add to cart"><span>Add to cart</span></a>
                                               {% else %}
                                               <h4 style="color: red;">Out Of Stock!!</h4>
                                               {% endif %}
@@ -474,6 +503,26 @@
       <!-- Modal End -->
 
   </div>
+  
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+      
+function addcat(id){
+    color = 0
+    console.log(color,"LLLLLLL")
+   
+      $.ajax({
+        type:"GET",
+        url : "{% url 'add_to_cart'  %}",
+        data : {"id" : id ,"color":color},
+       
+    });
+    }
+</script>
   <!-- Main Wrapper End -->
 
   {% endblock %}

@@ -103,14 +103,14 @@
                         <div class="product-details-content"> 
                             <div class="product-details-top">
                                 <h2 class="product-details-name">{{single_product.product_name}}</h2>
-                                <div class="ratings-wrap">
+                                {% comment %} <div class="ratings-wrap">
                                     <div class="ratings">
                                         <i class="fa fa-star rated"></i>
                                         <i class="fa fa-star rated"></i>
                                         <i class="fa fa-star rated"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
-                                    </div>
+                                    </div> {% endcomment %}
                                     <!-- <span>
                                         <a class="review-btn" href="#singleProductTab">1 Reviews</a>
                                         <a class="review-btn" href="#singleProductTab">write a review</a>
@@ -125,8 +125,14 @@
                                     <!-- <li>Availability: Out of Stock</li> -->
                                   
                                     <li>Availability: In Stock</li>
-                                   
-
+                                    <li>
+                                        <select class="form-control" name="color" id="value1">
+                                            <option value = "">-----select-----</option>
+                                            {% for i in variation %}
+                                            <option value = "{{i.color}}">{{i.color}}</option>
+                                            {% endfor %}
+                                          </select>
+                                    </li>
                                 </ul>
                                 <div class="product-details-price-wrapper">
                                     <span class="money">{{single_product.price}}</span>
@@ -153,7 +159,7 @@
                                         </div> {% endcomment %}
                                     </div>
                                 {% if single_product.stock > 0  %}
-                                    <a href="{% url 'add_to_cart' single_product.id %}"  class="btn btn-medium btn-style-2 add-to-cart">Add to Cart</a>
+                                    <a onclick= addcat({{single_product.id}})  class="btn btn-medium btn-style-2 add-to-cart">Add to Cart</a>
                                 {% else %}
                                 <h4 style="color: red;">Out Of Stock!!</h4>
                                 {% endif %}
@@ -353,4 +359,29 @@
 
 </div>
 <!-- Main Wrapper End -->
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+      
+function addcat(id){
+    color = $("#value1").val()
+    console.log(color,"LLLLLLL")
+    if (color !=''){
+      console.log("true")
+    }
+    else{
+      color = 0
+    }
+      $.ajax({
+        type:"GET",
+        url : "{% url 'add_to_cart'  %}",
+        data : {"id" : id ,"color":color},
+       
+    });
+    }
+</script>
 {% endblock %}

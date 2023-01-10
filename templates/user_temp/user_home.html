@@ -164,9 +164,15 @@
                                                 <img src="{{ pd.img1.url }}" alt="Product" class="primary-image" />
                                                 <img src="{{ pd.img2.url }}" alt="Product" class="secondary-image" />
                                                 <div class="product-img-overlay">
-                                                    <!-- <span class="product-label discount">
-                                                        -7%
-                                                    </span> -->
+                                                    {% if pd.offer is not 0 %}
+                                                    <span class="product-label discount">
+                                                        {{pd.offer}}%
+                                                    </span>
+                                                    {% elif pd.category_offer is not 0 %}
+                                                    <span class="product-label discount">
+                                                        {{pd.category_offer}}%
+                                                    </span>
+                                                    {% endif %}
                                                     <a href="{% url 'product_details' pd.id  %}" class="btn btn-transparent btn-fullwidth btn-medium btn-style-1">Quick View</a>
                                                 </div>
                                             </div>
@@ -197,10 +203,10 @@
                                                     <a class="same-action" href="wishlist.html" title="wishlist">
                                                         <i class="fa fa-heart-o"></i>
                                                     </a>
-                                                    <a class="add_cart cart-item action-cart" href="{% url 'add_to_cart' pd.id %}" title="wishlist"><span>Add to cart</span></a>
-                                                    <a class="same-action compare-mrg" data-bs-toggle="modal" data-bs-target="#productModal" href="compare.html">
+                                                    <a class="add_cart cart-item action-cart" onclick=addcat({{pd.id}}) title="wishlist"><span>Add to cart</span></a>
+                                                    {% comment %} <a class="same-action compare-mrg" data-bs-toggle="modal" data-bs-target="#productModal" href="compare.html">
                                                         <i class="fa fa-sliders fa-rotate-90"></i>
-                                                    </a>
+                                                    </a> {% endcomment %}
                                                 </div>
                                             </div>
                                         </div>
@@ -225,7 +231,30 @@
 </div>
 <!-- Main Wrapper End -->
 
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+      
+function addcat(id){
+    color = $("#value1").val()
+    console.log(color,"LLLLLLL")
+    if (color !=''){
+      console.log("true")
+    }
+    else{
+      color = 0
+    }
+      $.ajax({
+        type:"GET",
+        url : "{% url 'add_to_cart'  %}",
+        data : {"id" : id ,"color":color},
+       
+    });
+    }
+</script>
 
 
 {% endblock %}
