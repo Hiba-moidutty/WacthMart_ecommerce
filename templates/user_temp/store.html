@@ -17,8 +17,8 @@
                   <div class="col-12 text-center">
                       <h1 class="page-title">Shop</h1>
                       <ul class="breadcrumb justify-content-center">
-                          <li><a href="index.html">Home</a></li>
-                          <li class="current"><a href="shop.html">Shop</a></li>
+                          <li><a href="{% url 'user_home' %}">Home</a></li>
+                          <li class="current"><a href="{% url 'store' %}">Shop</a></li>
                       </ul>
                   </div>
               </div>
@@ -104,7 +104,8 @@
                           
                           <!-- Main Shop wrapper Start -->
                           <div class="shop-product-wrap container row m-0 p-0">
-                              <div class="col-12 col-4 d-flex">
+                              <div class="col-12 col-3 d-flex">
+                                {% if products %}
                                 {% for pd in products %}
                                   <div class="mirora-product mb-md--10">
                                       <div class="product-img">
@@ -175,25 +176,41 @@
                                       </div>
                                   </div>
                                 {% endfor %}
+                                {% else %}
+                                <p><h2>NO PRODUCTS</h2><p>
+                                {% endif %}
                               </div>
                           </div>
                           <!-- Main Shop wrapper End -->
 
                           <!-- Pagination Start -->
-                          <!-- <div class="pagination-wrap mt--15 mt-md--10">
-                              <p class="page-ammount">Showing 1 to 9 of 15 (2 Pages)</p>
+                          <div class="pagination-wrap mt--15 mt-md--10">
+                              <p class="page-ammount">Pages</p>
+                              {% if products.has_other_pages %}
                               <ul class="pagination">
-                                  <li><a href="#" class="first">|&lt;</a></li>
-                                  <li><a href="#" class="prev">&lt;</a></li>
-                                  <li><a href="#" class="current">1</a></li>
-                                  <li><a href="#">2</a></li>
-                                  <li><a href="#" class="next">&gt;</a></li>
-                                  <li><a href="#" class="next">&gt;|</a></li>
+                                {% if products.has_previous %}
+                                  <li><a href = "?page={{products.previous_page_number}}" class="first">|&lt;</a></li>
+                                  {% else %}
+                                  <li><a href = "#" class="prev">&lt;</a></li>
+                                  {% endif %}
+                                  {% for i in products.paginator.page_range %}
+                                        {% if products.number == i %}
+                                        <li><a href = "#" class="current">{{i}}</a></li>
+                                        {% else %}
+                                        <li><a href = "?page={{i}}">{{i}}</a></li>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% if products.has_next %}
+                                        <li><a href = "?page={{products.next_page_number}}" class="next">&gt;</a></li>
+                                        {% else %}
+                                        <li><a href = "#" class="next">&gt;</a></li>
+                                        {% endif %}
                               </ul>
-                          </div> -->
+                              {% endif %}
+                          </div> 
                           <!-- Pagination End -->
                       </div>
-                      <div class="col-lg-1 order-lg-1">
+                      <div class="col-lg-3 order-lg-1">
                           <aside class="shop-sidebar">
                               <div class="search-filter">
                                   <div class="filter-layered">
@@ -205,132 +222,71 @@
                                       </ul> {% endcomment %}
                                   </div>
                                   <div class="filter-price">
-                                      {% comment %} <h3 class="filter-heading">Price</h3>
-                                      <ul class="filter-list"> {% endcomment %}
-                                          {% comment %} <li>
-                                              <div class="filter-input filter-radio">
-                                                  <input type="radio" name="pricerange" id="pricerange-1" checked>
-                                                  <label for="pricerange-1">$55 - $100 (3)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-radio">
-                                                  <input type="radio" name="pricerange" id="pricerange-2">
-                                                  <label for="pricerange-2">$55 - $200 (2)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-radio">
-                                                  <input type="radio" name="pricerange" id="pricerange-3">
-                                                  <label for="pricerange-3">$300 - $500 (6)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-radio">
-                                                  <input type="radio" name="pricerange" id="pricerange-4">
-                                                  <label for="pricerange-4">$700 - $1000 (2)</label>
-                                              </div>
-                                          </li>
-                                      </ul> {% endcomment %}
+                                       <u><h2 class="filter-heading"><strong>Filter by Price</strong></h2></u>
+                                        <form action ="filter_price" method ="GET">
+                                      
+                                            <div class="form-check mt-3">
+                                                <input class="form-check-input" value="1" type="radio" name="gridradio" id="gridRadios2" value="option2">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                    <h6>&lt; 1000</h6>
+                                                </label>
+                                            </div>
+                                            <div class="form-check mt-3">
+                                                <input class="form-check-input" value="2" type="radio" name="gridradio" id="gridRadios2" value="option2">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                    <h6>1000 - 3000</h6> 
+                                                </label>
+                                            </div>
+                                            <div class="form-check mt-3">
+                                                <input class="form-check-input" value="3" type="radio" name="gridradio" id="gridRadios2" value="option2">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                   <h6>3000 - 6000</h6>
+                                                </label>
+                                            </div>
+                                            <div class="form-check mt-3">
+                                                <input class="form-check-input" value="4" type="radio" name="gridradio" id="gridRadios2" value="option2">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                <h6>6000 - 9000</h6>
+                                                </label>
+                                            </div>
+                                            <div class="form-check mt-3">
+                                                <input class="form-check-input" value="5" type="radio" name="gridradio" id="gridRadios2" value="option2">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                    <h6>9000 - 12,000</h6>
+                                                </label>
+                                            </div>
+                                            <div class="form-check mt-3">
+                                                <input class="form-check-input" value="6" type="radio" name="gridradio" id="gridRadios2" value="option2">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                    <h6>&gt; 12000</h6>
+                                                </label>
+                                            </div>
+                                      <button type ="submit" class ="btn btn btn-primary mt-3">Apply</button>
+                                    </form>
                                   </div>
                                   <div class="filter-categories">
-                                      {% comment %} <h3 class="filter-heading">Categories</h3>
-                                      <ul class="filter-list">
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="category1" id="category1" checked>
-                                                  <label for="category1">Category1</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="category2" id="category2">
-                                                  <label for="category2">Category2</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="category3" id="category3">
-                                                  <label for="category3">Category3</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="category4" id="category4">
-                                                  <label for="category4">Category4</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="category5" id="category5">
-                                                  <label for="category5">Category5</label>
-                                              </div>
-                                          </li>
-                                      </ul> {% endcomment %}
+                                      <u><h2 class="filter-heading"><strong>Categories</strong></h2></u>
+                                      {% for category in category %}
+                                      {% comment %} {% for category in links %} {% endcomment %}
+                                    <div class="product-content" >
+                                        {% comment %} <input class="form-check-input" value="1" type="radio" name="gridradio" id="gridRadios2" value="option2"> {% endcomment %}
+                                        <h4><a href="{{category.get_url}}" class="mainmenu__link">
+                                            {{category.category_name}}
+                                        </a></h4>
+                                    </div>
+                                    {% endfor %}
                                   </div>
                                   <div class="filter-color">
-                                      {% comment %} <h3 class="filter-heading">Color</h3>
-                                      <ul class="filter-list">
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="black" id="black">
-                                                  <label for="black">black (3)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="blue" id="blue">
-                                                  <label for="blue">blue (6)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="brown" id="brown">
-                                                  <label for="brown">brown (7)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="white" id="white">
-                                                  <label for="white">white (4)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="red" id="red">
-                                                  <label for="red">red (1)</label>
-                                              </div>
-                                          </li>
-                                      </ul> {% endcomment %}
+                                    <u><h2 class="filter-heading"><strong>Sub Categories</strong></h2></u>
+                                    {% for sub in sub_category %}
+                                    {% comment %} {% for category in links %} {% endcomment %}
+                                  <div class="product-content" >
+                                      {% comment %} <input class="form-check-input" value="1" type="radio" name="gridradio" id="gridRadios2" value="option2"> {% endcomment %}
+                                      <h4><a href="{{sub.get_url}}" class="mainmenu__link">
+                                          {{sub.subcategory_name}}
+                                      </a></h4>
                                   </div>
-                                  <div class="filter-color">
-                                      {% comment %} <h3 class="filter-heading">Manufacturer</h3>
-                                      <ul class="filter-list">
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="ferragamo" id="ferragamo">
-                                                  <label for="ferragamo">ferragamo (11)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="hermes" id="hermes">
-                                                  <label for="hermes">hermes (9)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="louis" id="louis">
-                                                  <label for="louis">louis vuitton (11)</label>
-                                              </div>
-                                          </li>
-                                          <li>
-                                              <div class="filter-input filter-checkbox">
-                                                  <input type="checkbox" name="christian" id="christian">
-                                                  <label for="christian">Christian Dior (8)</label>
-                                              </div>
-                                          </li>
-                                      </ul> {% endcomment %}
+                                  {% endfor %}
                                   </div>
                               </div>
                               <div class="banner-static">

@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'Offer',
     'Coupon',
     'Variation',
-
+    'crispy_forms'
 
 ]
 

@@ -4,7 +4,6 @@ from category.models import Product,Category,SubCategory
 from cart.models import Cart,CartItem
 from accounts.models import Address
 from Variation.models import Variation
-
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -32,23 +31,29 @@ def cart_view(request,total=0,quantity=0,cart_items = None):
       cart_items = CartItem.objects.filter(
         user = request.user, is_active =True
         ).order_by('-id')
-      print(cart_items,'llllllllllllllllll')
+      count = CartItem.objects.filter(user = request.user).count()
+      print(count,'sssssssssssssssssssssssss//////')
     else:
-      cart = Cart.objects.get(cart_id = cart_id(request))
-      cart_items = CartItem.objects.filter(cart = cart,is_active = True)
+        cart = Cart.objects.get(cart_id = cart_id(request))
+        cart_items = CartItem.objects.filter(cart = cart,is_active = True)
+        #Cart.objects.filter(cart_id = cart_id(request)).exists():
+          # print(cart)
+          # print(cart,cart_items,'kkkkkkkkkkkkkkkkk')
 
-    for cart_item in cart_items:
-      # c_variant = cart_item.variations
-      # if c_variant != "0" :
-      #   v = Variation.objects.get(variation_id = cart_item.variations)
-      if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
-        total +=(cart_item.product.offer_price * cart_item.quantity)
-      else:
-        total += (cart_item.product.price * cart_item.quantity)
-    # saved = 
-      quantity += cart_item.quantity
-    tax = (2 * total)/100
-    grand_total = total + tax
+      
+    if cart_items is not None:
+      for cart_item in cart_items:
+        c_variant = cart_item.variant_id
+        if c_variant != "0" :
+          v = Variation.objects.get(variation_id = cart_item.variant_id)
+          cart_item.save()
+        if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
+          total +=(cart_item.product.offer_price * cart_item.quantity)
+        else:
+          total += (cart_item.product.price * cart_item.quantity)
+        quantity += cart_item.quantity
+      tax = (2 * total)/100
+      grand_total = total + tax
 
   except ObjectDoesNotExist:
     pass
@@ -65,29 +70,25 @@ def cart_view(request,total=0,quantity=0,cart_items = None):
 
   
 def add_to_cart(request):
-  print("OOOOOOOOOOOOOOOOOOOOOOOOOOOO")
   product_id=request.GET.get('id')
   color1=request.GET.get('color')
-  print(product_id,color1,"LLLLLLLLLLLLLLLLL")
+  # print(product_id,color1,"LLLLLLLLLLLLLLLLL")
   current_user = request.user
   product = Product.objects.get(id=product_id)      #to get the product
   variant = 0
   var_id_ = 0
   if request.GET.get('color'):
     color = request.GET.get('color')
-    print(color,'rrrrrrrrrrrrrrrrrr')
     if color != "0":
-      variant = Variation.objects.get(product = product, color = color)
+      variant = Variation.objects.get(product = product, color = color )
       var_id_ = variant.variation_id
 
   # if user is authenticated
   if current_user.is_authenticated:
-    print("OOOOOOOOOOOOOOOOOOOO")
+    
     if variant is not 0:
       if CartItem.objects.filter(product = product,user = current_user,variant_id = var_id_).exists():
-        # print('kkkkkkkkkkkkkkkk')
         cart_item = CartItem.objects.get(product = product,user = current_user,variant_id = var_id_)
-        print("OOOOOO11111111111111111111OOOOOOOOOOOOOO")
         
         # to check whether the stock is less than the quantity adding to cart
         if cart_item.quantity >= product.stock :
@@ -98,8 +99,6 @@ def add_to_cart(request):
           cart_item.save()
       #create a new cart item
       else:
-        print("OOOO2222222222222222222222OOOOOOOOOOOOOO")
-
         cart_item = CartItem.objects.create(
           product = product, quantity = 1, user = current_user, variant_id = variant.variation_id
           )
@@ -107,10 +106,8 @@ def add_to_cart(request):
       return redirect('cart_view')
 
     else:  
-      print("OOOOOO44444444444444444444OOOOOOOOOOOOOO")
 
       if CartItem.objects.filter(product = product,user = current_user,variant_id = 0).exists():
-        print('kkkkkkkkkkkkkkkk')
         cart_item = CartItem.objects.get(product = product,user = current_user,variant_id = 0)
 
         # to check whether the stock is less than the quantity adding to cart
@@ -122,8 +119,6 @@ def add_to_cart(request):
           cart_item.save()
       #create a new cart item
       else:
-        print("OOOOOO44444444444444444444OOOOOOOOOOOOOO")
-
         cart_item = CartItem.objects.create(
           product = product, quantity = 1, user = current_user, variant_id = 0
           )
@@ -145,17 +140,32 @@ def add_to_cart(request):
     # return redirect('cart_view')
 
   else:
-    #if the user is not authenticate
+    #if user is not authenticate
     try:
       cart = Cart.objects.get(cart_id = cart_id(request))          #get the cart using the car_id present in the session
-    except Cart.DoesNotExist : 
-      cart = Cart.objects.create(cart_id = cart_id(request))
-      print("cartttttttttttttttttttt")
-      cart.save()
     
-    if variant != "0":
-      if CartItem.objects.filter( product=product, cart=cart, variant_id= var_id_).exists():
-          cart_item = CartItem.objects.get(product=product, cart=cart,variant_id = var_id_)
+      if variant is not '0':
+        if CartItem.objects.filter( product=product, cart=cart, variant_id= var_id_).exists():
+            cart_item = CartItem.objects.get(product=product, cart=cart,variant_id = var_id_)
+            if cart_item.quantity >= product.stock :
+              cart_item.quantity = product.stock
+              cart_item.save()
+            else:
+              cart_item.quantity += 1       
+              cart_item.save()
+            return redirect('cart_view')
+        else:
+            # print('ggggggggggggggggg')
+            cart_item = CartItem.objects.create(
+            product = product, quantity = 1, cart = cart, variant_id = var_id_
+            )
+            cart_item.save()
+            # print("Saveeeeeeeeeeeeee  ")
+            return redirect('cart_view')
+      else:
+        if CartItem.objects.filter( product=product, cart=cart, variant_id= 0).exists():
+          # print('kkkkkkkkkkkkkkkkkkkkk')
+          cart_item = CartItem.objects.get(product=product, cart=cart,variant_id = 0)
           if cart_item.quantity >= product.stock :
             cart_item.quantity = product.stock
             cart_item.save()
@@ -163,33 +173,24 @@ def add_to_cart(request):
             cart_item.quantity += 1       
             cart_item.save()
           return redirect('cart_view')
-      else:
-          print('ggggggggggggggggg')
+        else:
           cart_item = CartItem.objects.create(
-          product = product, quantity = 1, cart = cart, variant_id = variant.variation_id
+          product = product, quantity = 1, cart = cart, variant_id = 0
           )
           cart_item.save()
-          print("Saveeeeeeeeeeeeee  ")
           return redirect('cart_view')
-    else:
-      if CartItem.objects.filter( product=product, cart=cart, variant_id= 0).exists():
-        print('kkkkkkkkkkkkkkkkkkkkk')
-        cart_item = CartItem.objects.get(product=product, cart=cart,variant_id = 0)
-        if cart_item.quantity >= product.stock :
-          cart_item.quantity = product.stock
-          cart_item.save()
-        else:
-          cart_item.quantity += 1       
-          cart_item.save()
-        return redirect('cart_view')
-      else:
-        cart_item = CartItem.objects.create(
-        product = product, quantity = 1, cart = cart, variant_id = 0
-        )
+    
+    except Cart.DoesNotExist : 
+      cart = Cart.objects.create(cart_id = cart_id(request))
+      cart.save()
+      if variant is not '0':
+        cart_item = CartItem.objects.create(product = product, quantity = 1,cart = cart , varient_id = var_id_)
         cart_item.save()
         return redirect('cart_view')
-
-
+      else:
+        cart_item = CartItem.objects.create(product = product, quantity= 1, cart = cart)
+        cart_item.save()
+        return redirect("cart_view")
 
     # try:
     #   cart_item = CartItem.objects.get(product=product,cart=cart)
@@ -205,15 +206,100 @@ def add_to_cart(request):
     # return redirect('cart_view')
 
 
+#Increasing the quantity
+def quantity_increase(request):
+  product_id = request.GET.get('id')
+  v_id = request.GET.get('v_id')
+  print(v_id,product_id,'5555555555555')
+  product = Product.objects.get(id=product_id)
+  if v_id is not '0':
+    variant = Variation.objects.get(product=product,variation_id = v_id)
+    v_id = variant.variation_id
+  if request.user.is_authenticated:
+    if v_id is not '0':
+      # print('uuuuuuuuuuuuuuuuuuuuuuuuuu')
+      if CartItem.objects.filter(product = product,user = request.user,variant_id = v_id).exists():
+        cart_item = CartItem.objects.get(product = product, user = request.user, variant_id= v_id)
+        if cart_item.quantity >= product.stock:
+          cart_item.quantity = product.stock
+          cart_item.save()
+        else:
+          cart_item.quantity +=1
+          cart_item.save()
+          return redirect('cart_view')
+    else:
+      # print('iiiiiiiiiiiiiiiiiiiiiiii')
+      if CartItem.objects.filter(product = product,user = request.user,variant_id = 0).exists():
+        cart_item = CartItem.objects.get(product = product, user = request.user, variant_id= 0)
+        if cart_item.quantity >= product.stock:
+          cart_item.quantity = product.stock
+          cart_item.save()
+        else:
+          cart_item.quantity +=1
+          cart_item.save()
+          return redirect('cart_view')
+  else:
+    #if the user is not authenitcate
+    try:
+      cart = Cart.objects.get(cart_id = cart_id(request))
+
+    except Cart.DoesNotExist:
+      cart = Cart.objects.create(cart_id = cart_id(request))
+      cart.save()
+
+    if v_id is not '0':
+      if CartItem.objects.filter(product = product, cart = cart ,variant_id = v_id).exists():
+        cart_item = CartItem.objects.get(product = product, cart = cart, variant_id= v_id)
+        print(cart_item,'kkkkkkkkkkkkkkkkkk')
+        if cart_item.quantity >= product.stock:
+          cart_item.quantity = product.stock
+          cart_item.save()
+        else:
+          cart_item.quantity += 1
+          cart_item.save()
+          return redirect('cart_view')
+    else:
+      print(v_id,'DDDDDDDDDDDDDDDDDD')
+      if CartItem.objects.filter(product = product,cart = cart,variant_id = 0).exists():
+        cart_item = CartItem.objects.get(product = product, cart = cart, variant_id = 0)
+        if cart_item.quantity >= product.stock:
+          cart_item.quantity = product.stock
+          cart_item.save()
+        else:
+          cart_item.quantity +=1
+          cart_item.save()
+          return redirect('cart_view')
+    
+
+
+
+
 #DECREASING THE QUANTITY OF ITEM IN CART VIEW
-def remove_item_cart(request,product_id):
+def remove_item_cart(request):
+  product_id = request.GET.get('id')
   product = get_object_or_404(Product,id = product_id)
+  v_id = request.GET.get('v_id')
+  print(product_id,v_id,'dsdsdsdsddddddddddddddddd')
   try:
     if request.user.is_authenticated:
-      cart_item = CartItem.objects.get(product = product,user = request.user)
+      cart_item = CartItem.objects.filter(product = product,user = request.user,variant_id = v_id).exists()
+      if v_id is not '0':
+        print('[[[[[[[[[pppppppppppppp')
+        variant = Variation.objects.get(variation_id = v_id)
+        v_id = variant.variation_id
+        cart_item = CartItem.objects.get(product = product,user = request.user,variant_id = v_id)
+      else:
+        cart_item = CartItem.objects.get(product = product,user = request.user,variant_id = 0)
     else:
-       cart= Cart.objects.get(cart_id = cart_id(request))
-       cart_item = CartItem.objects.get(product = product,cart = cart)
+      #if user not authenticated
+      cart= Cart.objects.get(cart_id = cart_id(request))
+      cart_item = CartItem.objects.filter(product = product,cart = cart, variant_id =v_id).exists()
+      if v_id is not '0':
+        variant = Variation.objects.get(variation_id = v_id)
+        v_id = variant.variation_id
+        cart_item = CartItem.objects.get(product = product, cart=cart,variant_id = v_id)
+      else:
+        cart_item = CartItem.objects.get(product = product,cart=cart,variant_id =0)
     if cart_item.quantity > 1 :
       cart_item.quantity = cart_item.quantity - 1 
       cart_item.save()
@@ -225,13 +311,17 @@ def remove_item_cart(request,product_id):
 
 
 #DELETING THE ITEM FROM THE CART
-def remove_from_cart(request,product_id):
+def remove_from_cart(request):
+  product_id = request.GET.get('id')
+  v_id = request.GET.get('v_id')
   product = get_object_or_404(Product,id = product_id)
   if request.user.is_authenticated:
-    cart_item = CartItem.objects.get(product = product, user = request.user)
+    if CartItem.objects.filter(product = product, user = request.user,variant_id = v_id).exists():
+      cart_item =CartItem.objects.get(product = product, user = request.user,variant_id = v_id)
   else:
+    print(product_id,v_id,'hhhhhhhhhhhhhhh')
     cart = Cart.objects.get(cart_id = cart_id(request))
-    cart_item = CartItem.objects.get(product = product, cart = cart)
+    cart_item = CartItem.objects.get(product = product, cart = cart,variant_id = v_id)
   cart_item.delete()
   return redirect('cart_view')
 

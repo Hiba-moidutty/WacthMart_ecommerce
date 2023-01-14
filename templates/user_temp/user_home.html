@@ -19,64 +19,25 @@
         <div class="slider-area">
             <div class="homepage-slider">
                 <!-- Single Slide Start -->
-                <div class="single-slider content-v-center" style="background-image: url({% static 'user_static/img/slider/slider1-mirora1-1920x634.jpg' %})">
+                {% for banner in banners %}
+                <div class="single-slider content-v-center" style="background-image: url({{banner.image.url}})">
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
                                 <div class="slider-content">
-                                    <h5 data-animation="rollIn" data-duration=".8s" data-delay=".5s">Exclusive Offer -20% Off This Week</h5>
-                                    <h1 data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">H-Vault Classico</h1>
-                                    <p class="mb--30 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">H-Vault Watches Are A Lot Like Classic American Muscle Cars - Expect For The American Part That Is. </p>
-                                    <p class="mb--50 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">Starting At <strong>$1.499.00</strong></p>
-                                    <div class="slide-btn-group" data-animation="fadeInUp" data-duration="1s" data-delay=".3s">
-                                        <a href="shop.html" class="btn btn-bordered btn-style-1">Shop Now</a>
+                                     {% comment %} <h5 data-animation="rollIn" data-duration=".8s" data-delay=".5s">Exclusive Offer -20% Off This Week</h5> {% endcomment %}
+                                     <h1 data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">{{banner.banner_name}}</h1> 
+                                    <p class="mb--30 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">{{banner.product.product_description}} </p>
+                                    <p class="mb--50 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">Starting At <strong>₹{{banner.product.price}}</strong></p> 
+                                    <div class="slide-btn-group" data-animation="fadeInUp" data-duration="1s" data-delay=".3s"> 
+                                        <a href="/store/product_details/{{banner.product.id}}" class="btn btn-bordered btn-style-1">Shop Now</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Single Slide End -->
-
-                <!-- Single Slide Start -->
-                <div class="single-slider content-v-center" style="background-image: url({% static 'user_static/img/slider/slider2-mirora1-1920x634.jpg' %})">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="slider-content">
-                                    <h5 data-animation="rollIn" data-duration=".8s" data-delay=".5s">Exclusive Offer -20% Off This Week</h5>
-                                    <h1 data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">H-Vault Classico</h1>
-                                    <p class="mb--30 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">H-Vault Watches Are A Lot Like Classic American Muscle Cars - Expect For The American Part That Is. </p>
-                                    <p class="mb--50 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".2s">Starting At <strong>$1.499.00</strong></p>
-                                    <div class="slide-btn-group" data-animation="fadeInUp" data-duration="1s" data-delay=".3s">
-                                        <a href="shop.html" class="btn btn-bordered btn-style-1">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Slide End -->
-
-                <!-- Single Slide Start -->
-                <div class="single-slider content-v-center" style="background-image: url({% static 'user_static/img/slider/slider2-mirora1-1920x634.jpg' %})">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="slider-content">
-                                    <h5 data-animation="rollIn" data-duration=".3s" data-delay=".5s">Exclusive Offer -20% Off This Week</h5>
-                                    <h1 data-animation="fadeInDown" data-duration=".8s" data-delay=".3s">H-Vault Classico</h1>
-                                    <p class="mb--30 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".3s">H-Vault Watches Are A Lot Like Classic American Muscle Cars - Expect For The American Part That Is. </p>
-                                    <p class="mb--50 mb-sm--20" data-animation="fadeInDown" data-duration=".8s" data-delay=".3s">Starting At <strong>$1.499.00</strong></p>
-                                    <div class="slide-btn-group" data-animation="fadeInUp" data-duration="1s" data-delay=".3s">
-                                        <a href="shop.html" class="btn btn-bordered btn-style-1">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Single Slide End -->
+                {% endfor %}
             </div>
         </div>
 
@@ -87,48 +48,33 @@
         <div class="promo-box-area border-bottom ptb--80 ptb-md--60">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4 mb-sm--30">
-                        <div class="promo promo-1">
-                            <a href="shop.html" class="promo__box">
-                                <img src="{% static 'user_static/img/banner/img1-top-mirora1.jpg' %}" alt="Product Category">
-                                <span class="promo__content">
-                                    <span class="promo__label">Design Creative</span>
-                                    <span class="promo__name">Modern and Clean</span>
-                                    <span class="promo__price">From  $60.99 - Sale 20%</span>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-sm--30">
-                        <div class="promo promo-1">
-                            <a href="shop.html" class="promo__box">
-                                <img src="{% static 'user_static/img/banner/img2-top-mirora1.jpg' %}" alt="Product Category">
-                                <span class="promo__content">
-                                    <span class="promo__label">Bestselling Products</span>
-                                    <span class="promo__name">Jewelry and Diamonds</span>
-                                    <span class="promo__price">Only  from  $89.00</span>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="promo promo-1">
-                            <a href="shop.html" class="promo__box">
-                                <img src="{% static 'user_static/img/banner/img3-top-mirora1.jpg' %}" alt="Product Category">
-                                <span class="promo__content">
-                                    <span class="promo__label">Onsale Products</span>
-                                    <span class="promo__name">Perfect Rider Watch</span>
-                                    <span class="promo__price">Selling Off  30%</span>
-                                </span>
-                            </a>
+                    <div class="col-12">
+                        <div class="section-title mb--15">
+                            <h2 class="color--white">Trending Products</h2>
                         </div>
                     </div>
                 </div>
-                <div class="row mt--40 mt-md--30">
+                <div class="row">
+                    {% for trend in trending %}
+                    <div class="col-md-3 mb-sm--30">
+                        <div class="promo promo-1">
+                            <a href="{% url 'store' %}" class="promo__box">
+                                <img src="{{ trend.img1.url }}" alt="Product Category">
+                                <span class="promo__content">
+                                    <span class="promo__label">{{trend.product_name}}</span>
+                                    <span class="promo__name">{{trend.category}}</span>
+                                    <span class="promo__price">From ₹{{trend.price}} - Sale {{trend.offer}}%</span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% comment %} <div class="row mt--40 mt-md--30">
                     <div class="col-12 text-center">
                         <p class="tweet"><i class="fa fa-twitter"></i> Check out "Alice - Multipurpose Responsive #Magento #Theme" on #Envato by @Plazathemes #Themeforest <a href="#">https://t.co/DNdhAwzm88</a></p>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
 
@@ -141,15 +87,15 @@
                 <div class="row">
                     <div class="col-12 text-center">
                         <ul class="nav nav-tabs product-tab__head" id="product-tab" role="tablist">
-                            <li class="product-tab__item nav-item active">
+                            {% comment %} <li class="product-tab__item nav-item active">
                                 <a class="product-tab__link nav-link active" id="nav-featured-tab" data-bs-toggle="tab" href="#nav-featured" role="tab" aria-selected="true">Featured</a>
-                            </li>
-                            <li class="product-tab__item nav-item">
+                            </li> {% endcomment %}
+                            {% comment %} <li class="product-tab__item nav-item">
                                 <a class="product-tab__link nav-link" id="nav-new-tab" data-bs-toggle="tab" href="#nav-new" role="tab" aria-selected="false">New Arrivals</a>
-                            </li>
-                            <li class="product-tab__item nav-item">
+                            </li> {% endcomment %}
+                            {% comment %} <li class="product-tab__item nav-item">
                                 <a class="product-tab__link nav-link" id="nav-bestseller-tab" data-bs-toggle="tab" href="#nav-bestseller" role="tab" aria-selected="false">Bestseller</a>
-                            </li>
+                            </li> {% endcomment %}
                             <li class="product-tab__item nav-item">
                                 <a class="product-tab__link nav-link" id="nav-onsale-tab" data-bs-toggle="tab" href="#nav-onsale" role="tab" aria-selected="false">On Sale</a>
                             </li>

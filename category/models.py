@@ -11,8 +11,8 @@ class Category(models.Model):
   # category_image = models.ImageField(upload_to='photos/categories', blank=True)
   discount       = models.IntegerField(null = True, blank=True, default=0)
 
-  # def get_url(self):
-    # return reverse('products_by_category',args=[self.slug])
+  def get_url(self):
+    return reverse('products_by_category',args=[self.slug])
 
   def __str__(self):
     return self.category_name
@@ -27,8 +27,8 @@ class SubCategory(models.Model):
   slug               = models.SlugField(max_length=200)
   parent_category    = models.ForeignKey(Category,on_delete = models.CASCADE)
 
-  # def get_url(self):
-  #   return reverse('products_by_subcategory',args=[self.parent_category.slug,self.slug]) 
+  def get_url(self):
+    return reverse('products_by_subcategory',args=[self.parent_category.slug,self.slug]) 
 
   def __str__(self):
     return self.subcategory_name
@@ -59,11 +59,8 @@ class Product(models.Model):
   product_id           = models.CharField(max_length=100 ,null= True ,blank=True, default=0)
 
 
-
-  
-
   def get_url(self):
-    return reverse('product_detail',args =[self.category.slug,self.subcategory.slug,self.slug])
+    return reverse('product_details',args =[self.category.slug,self.subcategory.slug,self.slug])
 
   def __str__(self):
     return self.product_name

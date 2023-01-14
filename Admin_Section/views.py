@@ -1,3 +1,4 @@
+import uuid
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -7,6 +8,8 @@ from django.contrib import messages
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from Admin_Section.forms import BannerForm
+from User_Section.models import Banner
 from accounts.models import Account
 from datetime import datetime, timedelta
 from django.db.models import Count,Sum,Q,F
@@ -436,3 +439,32 @@ def generateSalesReport(request):
 # def GenerateCSV(request):
 #   messages.info(request,"something error occured!! ")
 #   return redirect(request.META.get('HTTP_REFERER'))
+
+@never_cache
+
+
+
+
+@never_cache
+@login_required(login_url='admin_login')
+def add_banner(request):
+  form = BannerForm()
+  if request.method == "POST":
+    form = BannerForm(request.POST, request.FILES)
+    if form.is_valid():
+      form.save()
+      return redirect("add_banner")
+  banner = Banner.objects.all()
+  context = {"form" : form,
+  "banner" : banner
+  }
+  return render(request,"admin_temp/add_banner.html",context)
+
+
+@never_cache
+@login_required(login_url='admin_login')
+def remove_banner(request):
+  id = request.GET.get('id')
+  banner = Banner.objects.get(id = id)
+  banner.delete()
+  return HttpResponseRedirect(request.META["HTTP_REFERER"])

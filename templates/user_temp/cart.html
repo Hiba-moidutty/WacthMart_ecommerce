@@ -59,7 +59,7 @@
                                           <tbody>
                                             {% for item in cart_items %}
                                               <tr>
-                                                  <td><a class="delete" href="{% url 'remove_from_cart' item.product.id %}"><i class="fa fa-times"></i></a></td>
+                                                  <td><a class="delete" onclick =deleteitem({{item.product.id }},"{{item.variant_id}}")><i class="fa fa-times"></i></a></td>
                                                   <td>
                                                       <a href="">
                                                           <img src="{{ item.product.img1.url }}" alt="product">
@@ -68,7 +68,7 @@
                                                   <td class="wide-column">
                                                       <h3><a href="{% url 'product_details' item.product.id %}">{{item.product.product_name}}</a></h3>
                                                       {% if item.variant_id != "0" %}
-                                                      <h6 class="text-white mb-0">Color : {{item.color}}</h6>
+                                                      <h6 class="text-white mb-0">Color : {{item.color_find}}</h6>
                                                       {% endif %}
                                                   </td>
                                                   {% if item.product.offer_price != 0 and item.product.offer_price is not None  %}
@@ -78,9 +78,9 @@
                                                   {% endif %} 
                                                   <td class="d-flex justify-content-center">
                                                      
-                                                        <a href="{% url 'remove_item_cart' item.product.id %}" class="btn btn-sm " type="button" id="button-minus"><i class="fa fa-minus"></i></a>
+                                                        <a onclick= qtyminus({{item.product.id}},"{{item.variant_id}}") class="btn btn-sm " type="button" id="button-minus"><i class="fa fa-minus"></i></a>
                                                         <input  type="number" class="quantity-input mx-2"  value="{{ item.quantity }}">
-                                                        <a onclick=addcat({{item.product.id}}) class="btn btn-sm " type="button" id="button-plus"><i class="fa fa-plus"></i></button>
+                                                        <a onclick= addcat({{item.product.id }},"{{item.variant_id}}") class="btn btn-sm " type="button" id="button-plus"><i class="fa fa-plus"></i></a>
                                                       
                                                   </td>
                                                   <td class="cart-product-price"><strong>{{item.sub_total}}</strong></td>
@@ -221,9 +221,9 @@
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script>
           
-    function addcat(id){
+    function addcat(id,v_id){
         color = $("#value1").val()
-        console.log(color,"LLLLLLL")
+        console.log(color,"LLLLLLL",v_id)
         if (color !=''){
           console.log("true")
         }
@@ -232,11 +232,29 @@
         }
           $.ajax({
             type:"GET",
-            url : "{% url 'add_to_cart'  %}",
-            data : {"id" : id ,"color":color},
+            url : "{% url 'quantity_increase'  %}",
+            data : {"id" : id ,"v_id":v_id},
            
         });
         }
+
+
+    function qtyminus(id,v_id){
+        $.ajax({
+            type:"GET",
+            url: "{% url 'remove_item_cart' %}",
+            data: {"id" : id,"v_id" : v_id},
+        });
+    }
+
+
+    function deleteitem(id,v_id){
+        $.ajax({
+            type: "GET",
+            url: "{% url 'remove_from_cart' %}",
+            data:{"id" : id,"v_id" : v_id},
+        });
+    }
     </script>
 
 {% endblock %}

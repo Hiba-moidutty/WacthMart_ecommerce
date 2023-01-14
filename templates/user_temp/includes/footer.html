@@ -6,24 +6,24 @@
       <div class="row mb--40 mb-md--30">
           <div class="col-lg-4 col-md-6 mb-md--30">
               <div class="footer-widget">
-                  <h3 class="widget-title">About Mirora</h3>
+                  <h3 class="widget-title">About</h3>
                   <div class="widget-content mb--20">
-                      <p>Address: 123 Main Street, Anytown, <br> CA 12345 - USA.</p>
-                      <p>Phone: (012) 800 456 789</p>
-                      <p>Fax: (012) 800 456 789</p>
-                      <p>Email: Contact@plazathemes.com</p>
+                      <p>Address: Kochi, Kerala <br> 78693-INDIA</p>
+                      <p>Phone: +91 22337 75590</p>
+                      {% comment %} <p>Fax: (012) 800 456 789</p> {% endcomment %}
+                      <p>Email: thabu#3480@gmail.com</p>
                   </div>
                   <ul class="social social-round">
-                      <li class="social__item">
+                      {% comment %} <li class="social__item">
                           <a class="social__link"  href="https://facebook.com/" target="_blank" rel="noopener noreferrer">
                               <i class="fa fa-facebook"></i>
                           </a>
-                      </li>
-                      <li class="social__item">
+                      </li> {% endcomment %}
+                      {% comment %} <li class="social__item">
                           <a class="social__link"  href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
                               <i class="fa fa-twitter"></i>
                           </a>
-                      </li>
+                      </li> {% endcomment %}
                       <li class="social__item">
                           <a class="social__link"  href="https://youtube.com/" target="_blank" rel="noopener noreferrer">
                               <i class="fa fa-youtube"></i>
@@ -34,15 +34,15 @@
                               <i class="fa fa-instagram"></i>
                           </a>
                       </li>
-                      <li class="social__item">
+                      {% comment %} <li class="social__item">
                           <a class="social__link"  href="https://plus.google.com/" target="_blank" rel="noopener noreferrer">
                               <i class="fa fa-google-plus"></i>
                           </a>
-                      </li>
+                      </li> {% endcomment %}
                   </ul>
               </div>
           </div>
-          <div class="col-lg-2 col-md-6 mb-md--30">
+          {% comment %} <div class="col-lg-2 col-md-6 mb-md--30">
               <div class="footer-widget">
                   <h3 class="widget-title">Information</h3>
                   <ul class="widget-menu">
@@ -54,8 +54,8 @@
                       <li><a href="#">Contact Us</a></li>
                   </ul>
               </div>
-          </div>
-          <div class="col-lg-2 col-md-6 mb-sm--30">
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-2 col-md-6 mb-sm--30">
               <div class="footer-widget">
                   <h3 class="widget-title">Extras</h3>
                   <ul class="widget-menu">
@@ -67,8 +67,8 @@
                       <li><a href="#">Returns</a></li>
                   </ul>
               </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
+          </div> {% endcomment %}
+          {% comment %} <div class="col-lg-4 col-md-6">
               <div class="footer-widget">
                   <h3 class="widget-title">Custom Products</h3>
                   <div class="widget-product">
@@ -97,44 +97,19 @@
                               </div>
                           </div>
                       </div>
-                      <div class="product">
-                          <div class="product-img">
-                              <img src="{% static 'user_static/img/products/11-450x450.jpg' %}" alt="products">
-                          </div>
-                          <div class="product-content">
-                              <div class="product-rating">
-                                  <span>
-                                      <i class="fa fa-star theme-star"></i>
-                                      <i class="fa fa-star theme-star"></i>
-                                      <i class="fa fa-star theme-star"></i>
-                                      <i class="fa fa-star theme-star"></i>
-                                      <i class="fa fa-star"></i>
-                                  </span>
-                              </div>
-                              <h4 class="product-title">
-                                  <a href="product-details.html" tabindex="0">Acer Aspire E 15</a>
-                              </h4>
-                              <div class="product-price-wrapper">
-                                  <span class="money">$550.00</span>
-                                  <span class="product-price-old">
-                                      <span class="money">$700.00</span>
-                                  </span>
-                              </div>
-                          </div>
-                      </div>
                   </div>
               </div>
-          </div>
+          </div> {% endcomment %}
       </div>
       <div class="row mb--40 mb-md--30">
           <div class="col-12">
               <ul class="footer-menu">
-                  <li><a href="#">Home</a></li>
-                  <li><a href="#">Online Store</a></li>
-                  <li><a href="#">Promotion</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
-                  <li><a href="#">Terms Of Use</a></li>
-                  <li><a href="#">Sitemap</a></li>
+                  <li><a href="{% url 'user_home' %}">Home</a></li>
+                  <li><a href="{% url 'store' %}">Store</a></li>
+                  {% comment %} <li><a href="3">Promotion</a></li> {% endcomment %}
+                  {% comment %} <li><a href="{% url 'user_home' %}">Privacy Policy</a></li> {% endcomment %}
+                  {% comment %} <li><a href="{% url 'user_home' %}">Terms Of Use</a></li> {% endcomment %}
+                  <li><a href="{% url 'user_login' %}">User Account</a></li>
                   <li><a href="#">Support</a></li>
                   <li><a href="#">Contacts</a></li>
               </ul>
@@ -142,7 +117,7 @@
       </div>
       <div class="row">
           <div class="col-12 text-center">
-              <p class="copyright-text">&copy; Mirora 2021 Made With <i class="fa fa-heart"></i> BY <a href="https://hasthemes.com/">HasThemes</a> </p>
+              <p class="copyright-text">&copy; WatchMart 2023 Made With <i class="fa fa-heart"></i> BY <a href="https://hasthemes.com/">~Hiba~</a> </p>
               <img src="{% static 'user_static/img/others/payment.png' %}" alt="payment">
           </div>
       </div>

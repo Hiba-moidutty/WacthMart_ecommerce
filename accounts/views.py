@@ -85,8 +85,8 @@ def user_login(request):
             cart_item = CartItem.objects.filter(cart=cart)
             for item in cart_item:
               item.user = user
-              if CartItem.objects.filter(product = item.product,user =user ).exists():
-                item_c = CartItem.objects.get(product = item.product,user =user )
+              if CartItem.objects.filter(product = item.product,user =user, variant_id = item.variant_id).exists():
+                item_c = CartItem.objects.get(product = item.product,user =user, variant_id = item.variant_id)
                 item_c.quantity += item.quantity
                 item_c.save()
               else: 
@@ -101,7 +101,7 @@ def user_login(request):
         return redirect('user_home')
 
       else:
-        messages.error(request,"invalid credentials")
+        messages.error(request,"Invalid credentials")
         return redirect('user_login')
 
     else:
