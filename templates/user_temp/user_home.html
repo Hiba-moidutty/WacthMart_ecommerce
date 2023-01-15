@@ -124,7 +124,7 @@
                                             </div>
                                             <div class="product-content text-center">
                                                 <span>{{pd.subcategory}}</span>
-                                                <h4><a href="">{{pd.product_name}}</a></h4>
+                                                <h4><a href="{% url 'product_details' pd.id %}">{{pd.product_name}}</a></h4>
                                                 <div class="product-price-wrapper">
                                                     <span class="money">{{pd.price}}</span>
                                                     <!-- <span class="product-price-old">
@@ -134,13 +134,13 @@
                                             </div>
                                             <div class="mirora_product_action text-center position-absolute">
                                                 <div class="product-rating">
-                                                    <span>
+                                                    {% comment %} <span>
                                                         <i class="fa fa-star theme-star"></i>
                                                         <i class="fa fa-star theme-star"></i>
                                                         <i class="fa fa-star theme-star"></i>
                                                         <i class="fa fa-star theme-star"></i>
                                                         <i class="fa fa-star"></i>
-                                                    </span>
+                                                    </span> {% endcomment %}
                                                 </div>
                                                 <p>
                                                   {{pd.product_description}}
@@ -179,9 +179,14 @@
 
 <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% comment %} <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> {% endcomment %}
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
 <script>
       
 function addcat(id){
@@ -193,13 +198,26 @@ function addcat(id){
     else{
       color = 0
     }
-      $.ajax({
-        type:"GET",
-        url : "{% url 'add_to_cart'  %}",
-        data : {"id" : id ,"color":color},
+
+    Swal.fire({
+        title: 'Added to cart successfully!!',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type:"GET",
+                url : "{% url 'add_to_cart'  %}",
+                data : {"id" : id ,"color":color},
        
-    });
-    }
+            });
+        }
+    })
+}
 </script>
 
 
