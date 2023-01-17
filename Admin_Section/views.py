@@ -39,6 +39,7 @@ def admin_login(request):
 @never_cache
 @login_required(login_url='admin_login')
 def admin_home(request):
+  month=0
   if request.user.is_superuser == True:
       total_users = Account.objects.filter(is_active = True).count()
       total_products = Product.objects.filter(is_available = True).count()
@@ -51,7 +52,6 @@ def admin_home(request):
       paypal_m = Order.objects.filter(payment_method = 'Paypal').count()
      
        
-
       #monthly sales
       today   = datetime.now()
       current = today.strftime("%B %d, %Y")
@@ -61,9 +61,20 @@ def admin_home(request):
       r = returns.count()
       sales   = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(sales = Count('id',filter=Q(status ="Delivered")),cancelled=Count('id',filter=Q(status="Cancelled"))).order_by("order_date__date")
       s = sales.count()
+
+      monthly_orders=0
+      if request.GET.get('Month') !="0":
+        currentmonth = datetime.now().month
+        month1 = request.GET.get('Month')
+        print(month1,'vvvvvvvvvvvvvvvvvv')
+        if month1  is not None and month1 !="0":
+          print('hhhhhhhhh')
+          month = int(month1)
+          monthly_orders = Order.objects.filter(order_date__month=month).count()
       # best_moving = Order.objects.filter(order_date__month = today.year).annotate(moving = Count('product_id')).filter(moving__gt = 2)
       return render(request,"admin_temp/admin_home.html",{
       'current' : current,
+      'monthly_orders':monthly_orders,
       'total_users': total_users,
       'total_products': total_products,
       'total_revenue': total_revenue,
@@ -73,11 +84,29 @@ def admin_home(request):
       'sales' : sales,
       'dates' : dates,
       'returns' : returns, 
+      'month':str(month),
+      'months': ["1","2","3","4","5","6","7","8","9","10","11","12"],
       'r' : r,
       's':s,
-      'd':d,      })
+      'd':d, })
   return redirect("admin_login")
-    
+
+
+# def by_month(request):
+#   print("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+#   #by month
+#   monthly_orders=[]
+#   if request.GET.get('Month') !="0":
+#     currentmonth = datetime.now().month
+#     month1 = request.GET.get('Month')
+#     print(month1,'vvvvvvvvvvvvvvvvvv')
+#     if month1  is not None and month1 !="0":
+#       print('hhhhhhhhh')
+#       month = int(month1)
+#       monthly_orders = Order.objects.filter(order_date__month=month).count()
+#       print(monthly_orders,'eeeeeeeeeee')
+#       return redirect('admin_home')
+
 
 @never_cache
 def admin_logout(request):
@@ -256,7 +285,7 @@ def add_product(request):
       'parentcategories':parent_category,
       'subcategory': subcategory
     }
-    if request.method =='POST':
+    if request.method == 'POST':
       if request.POST.get('product_name') and request.POST.get('price') and request.POST.get('stock') and request.POST.get('product_description') and request.POST.get('subcategory') and request.POST.get('category') and request.FILES['pro_img1'] and request.FILES['pro_img2'] and request.FILES['pro_img3'] and request.FILES['pro_img4']:
         product_name = request.POST.get('product_name')
         if Product.objects.filter(product_name = product_name).exists():
@@ -439,8 +468,6 @@ def generateSalesReport(request):
 # def GenerateCSV(request):
 #   messages.info(request,"something error occured!! ")
 #   return redirect(request.META.get('HTTP_REFERER'))
-
-@never_cache
 
 
 

@@ -34,10 +34,12 @@
               <div class="container">
                   <div class="cart-wrapper bg--2 mb--80 mb-md--60 ">
                     {% if not cart_items %}
-                    <h3 class="text-center my-4" >Your Shopping Cart Is Empty!!</h3>
+                    <div class="text-center my-4 ">
+                    <h4>Your Shopping Cart Is Empty!!</h4>
+                    </div>
                     <br>
                     <div class="text-center"> 
-                        <a href="{% url 'store' %}" class="btn btn primary">Continue Shopping>>></a>
+                        <a href="{% url 'store' %}" class="btn btn primary my-4">Continue Shopping>>></a>
                     </div>
                     {% else %}
                       <div class="row">
@@ -61,12 +63,12 @@
                                               <tr>
                                                   <td><a class="delete" onclick =deleteitem({{item.product.id }},"{{item.variant_id}}")><i class="fa fa-times"></i></a></td>
                                                   <td>
-                                                      <a href="">
+                                                      <a href="{% url 'product_details' item.product.id %}">
                                                           <img src="{{ item.product.img1.url }}" alt="product">
                                                       </a>
                                                   </td>
                                                   <td class="wide-column">
-                                                      <h3><a href="{% url 'product_details' item.product.id %}">{{item.product.product_name}}</a></h3>
+                                                      <h5>{{item.product.product_name}}</h5>
                                                       {% if item.variant_id != "0" %}
                                                       <h6 class="text-white mb-0">Color : {{item.color_find}}</h6>
                                                       {% endif %}
@@ -74,16 +76,16 @@
                                                   {% if item.product.offer_price != 0 and item.product.offer_price is not None  %}
                                                   <td class="cart-product-price"><strong>{{item.product.offer_price}}</strong></td>
                                                   {% else %}
-                                                  <td class="cart-product-price"><strong>{{item.product.price}}</strong></td>
+                                                  <td class="cart-product-price"><strong>₹{{item.product.price}}</strong></td>
                                                   {% endif %} 
                                                   <td class="d-flex justify-content-center">
                                                      
-                                                        <a onclick= qtyminus({{item.product.id}},"{{item.variant_id}}") class="btn btn-sm " type="button" id="button-minus"><i class="fa fa-minus"></i></a>
-                                                        <input  type="number" class="quantity-input mx-2"  value="{{ item.quantity }}">
-                                                        <a onclick= addcat({{item.product.id }},"{{item.variant_id}}") class="btn btn-sm " type="button" id="button-plus"><i class="fa fa-plus"></i></a>
+                                                        <a onclick= qtyminus("quantity{{forloop.counter}}","sub_total{{forloop.counter}}",{{item.product.id}},"{{item.variant_id}}") class="btn btn-sm " type="button" id="button-minus"><i class="fa fa-minus"></i></a>
+                                                        <input  type="number" id="quantity{{forloop.counter}}" class="quantity-input mx-2"  value="{{ item.quantity }}">
+                                                        <a onclick= addcat("quantity{{forloop.counter}}","sub_total{{forloop.counter}}",{{item.product.id }},"{{item.variant_id}}") class="btn btn-sm " type="button" id="button-plus"><i class="fa fa-plus"></i></a>
                                                       
                                                   </td>
-                                                  <td class="cart-product-price"><strong>{{item.sub_total}}</strong></td>
+                                                  <td class="cart-product-price"><strong id="sub_total{{forloop.counter}}" >₹{{item.sub_total}}</strong></td>
                                               </tr>
                                             {% endfor %}
                                           </tbody>
@@ -122,13 +124,13 @@
                                           <tbody>
                                               <tr class="cart-subtotal">
                                                   <th>Total Price</th>
-                                                  <td><span class="price-ammount">${{total}}</span></td>
+                                                  <td><span  id="total" class="price-ammount">₹{{total}}</span></td>
                                               </tr>
                                               
                                               <tr class="shipping">
                                                   <th>Tax</th>
                                                   <td>
-                                                      tax included: <span class="price-ammount">${{tax}}</span>
+                                                      tax included: <span id= "tax" class="price-ammount">₹{{tax}}</span>
                                                       {% comment %} <a href="#" class="expand-calculator">Calculate Shipping</a>
                                                       <form action="#" id="shipping-calculator" class="form shipping-form hide-in-default">
                                                           <select name="shipping_country" id="shipping_country" class="form__input form__input--2">
@@ -188,7 +190,7 @@
                                               </tr>
                                               <tr class="cart-total">
                                                   <th>GRAND TOTAL</th>
-                                                  <td><span class="price-ammount">{{grand_total}}</span></td>
+                                                  <td><span id="grand_total" class="price-ammount">{{grand_total}}</span></td>
                                               </tr>
                                           </tbody>
                                       </table>
@@ -216,14 +218,17 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script>
           
-    function addcat(id,v_id){
+    function addcat(quantity,sub_total,id,v_id){
+        var qty = $('#'+quantity)
+        var sub= $('#'+sub_total)
+        console.log(quantity,'function called')
         color = $("#value1").val()
-        console.log(color,"LLLLLLL",v_id)
         if (color !=''){
           console.log("true")
         }
@@ -234,25 +239,62 @@
             type:"GET",
             url : "{% url 'quantity_increase'  %}",
             data : {"id" : id ,"v_id":v_id},
-           
+            success:function(r){
+
+                $(qty).val(r.quantity)
+                $(sub).text("₹"+r.sub)
+                console.log(r.sub)
+                $('#tax').text("₹"+r.tax)
+                $('#total').text("₹"+r.total)
+                $('#grand_total').text("₹"+r.grand_total)
+            },
         });
         }
 
 
-    function qtyminus(id,v_id){
+    function qtyminus(quantity,sub_total,id,v_id){
+        var qty = $('#'+quantity)
+        var sub= $('#'+sub_total)
+        console.log('function called')
+
         $.ajax({
             type:"GET",
             url: "{% url 'remove_item_cart' %}",
             data: {"id" : id,"v_id" : v_id},
+            success : function(r){
+        
+            $(qty).val(r.quantity)
+            $(sub).text("₹"+r.sub)
+            console.log(r.sub)
+            $('#tax').text("₹"+r.tax)
+            $('#total').text("₹"+r.total)
+            $('#grand_total').text("₹"+r.grand_total)
+            console.log(r.grand_total,'oooooooo')
+            }
         });
     }
 
 
     function deleteitem(id,v_id){
+        event.preventDefault()
         $.ajax({
             type: "GET",
             url: "{% url 'remove_from_cart' %}",
             data:{"id" : id,"v_id" : v_id},
+            success : function(response) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Item removed from cart',
+                    showConfirmButton: false,
+                    })
+                    setTimeout(() => {
+                        window.location.href = '{% url 'cart_view' %}'
+                    },
+                    1000
+                );
+                },
+               
         });
     }
     </script>

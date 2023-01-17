@@ -17,13 +17,13 @@
                     <img src="{% static 'admin_static/images/dashboard/Group126@2x.png' %}" class="gradient-corona-img img-fluid" alt="">
                   </div>
                   <div class="col-5 col-sm-7 col-xl-8 p-0">
-                    <h4 class="mb-1 mb-sm-0">Want even more features?</h4>
-                    <p class="mb-0 font-weight-normal d-none d-sm-block">Check out our Pro version with 5 unique layouts!</p>
+                    <h4 class="mb-1 mb-sm-0">ADMIN DASHBOARD</h4>
+                    <p class="mb-0 font-weight-normal d-none d-sm-block"></p>
                   </div>
                   <div class="col-3 col-sm-2 col-xl-2 pl-0 text-center">
-                    <span>
+                    {% comment %} <span>
                       <a href="https://www.bootstrapdash.com/product/corona-admin-template/" target="_blank" class="btn btn-outline-light btn-rounded get-started-btn">Upgrade to PRO</a>
-                    </span>
+                    </span> {% endcomment %}
                   </div>
                 </div>
               </div>
@@ -121,7 +121,7 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">Payment History</h4>
-                <canvas id="payment_status" width="700" height="350" class="transaction-chart"></canvas>
+                <canvas id="payment_status" style="height:250px" class="transaction-chart"></canvas>
                 <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
                   <div class="text-md-center text-xl-left">
                     <h6 class="mb-1">Order via Paypal</h6>
@@ -145,32 +145,45 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 grid-margin stretch-card">
+          <div class="col-md-6 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Order History</h4>
+                <h4 class="card-title">Total Order History</h4>
                 <canvas id="sales" class="transaction-chart"></canvas>
-                {% comment %} <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                  <div class="text-md-center text-xl-left">
-                    <h6 class="mb-1">kkkk</h6>
-                    <p class="text-muted mb-0">{{paypal_m}}</p>
-                  </div>
-                  <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                    <h6 class="font-weight-bold mb-0">{{d}}</h6>
-                  </div>
-                </div> {% endcomment %}
-                {% comment %} <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                  <div class="text-md-center text-xl-left">
-                    <h6 class="mb-1">mmm</h6>
-                    <p class="text-muted mb-0">{{cod_m}}</p>
-                  </div>
-                  <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                    <h6 class="font-weight-bold mb-0">{{s}}</h6>
-                  </div>
-                </div> {% endcomment %}
               </div>
             </div>
           </div>
+         <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Month wise order history</h4>
+              <form id = 'formId' action ="{% url 'admin_home' %}" method ="GET">
+                <div class="form-group">
+                  <label>Select Month</label>
+                  <select name="Month" class="js-example-basic-single" style="width:100%">
+                    <option value="0">Select by Month</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                </div>
+                <div class="my-3">
+                  <button id ='submitButton' type="submit" class="btn btn-outline-primary btn-icon-text">Submit</button>
+                </div>
+                <canvas id="bar-chart" class="transaction-chart"></canvas>
+              </form>
+              </div>
+            </div>
+          </div> 
           {% comment %} <div class="col-sm-4 grid-margin">
             <div class="card">
               <div class="card-body">
@@ -260,9 +273,14 @@
   </div>
   <!-- page-body-wrapper ends -->
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 <script>
+
 new Chart(document.getElementById("sales"), {
   type: 'line',
   data: {
@@ -312,5 +330,48 @@ new Chart(document.getElementById("payment_status"), {
     }
   }
 });
+
+new Chart(document.getElementById("bar-chart"), {
+  type: 'bar',
+  data: {
+    labels: ["Jan", "Feb", "March", "April", "May","June","July","Aug","Sept","Oct","Nov","Dec"],
+    datasets: [
+      {
+        label: "month wise orders",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2"],
+        data: [
+        {% for i  in months  %}
+        {% if i == month  %}
+        {{monthly_orders}},
+        {% else %}
+        '0',
+        {% endif %}
+        {% endfor %}
+        ]
+      }
+    ]
+  },
+  options: {
+    legend: { display: false },
+    title: {
+      display: true,
+      {% comment %} text: 'Predicted world population (millions) in 2050' {% endcomment %}
+    }
+  }
+}); 
+
+
+$(()=>{
+  $("#submitButton").click(function(ev){
+    var form = $("#formId");
+    var url = form.attr("{% url 'admin_home' %}");
+    $.ajax({
+      type : "GET",
+      url : url,
+      data: form.serialize(),
+      });
+    });
+  });
+
 </script>
 {% endblock %}

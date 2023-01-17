@@ -94,8 +94,7 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
         print(get_address)
         status = True
       return JsonResponse({'status' : status})
-
-
+      
     return redirect('order_success')
 
 

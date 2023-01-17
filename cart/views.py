@@ -6,6 +6,7 @@ from accounts.models import Address
 from Variation.models import Variation
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.core.exceptions import ObjectDoesNotExist
@@ -25,7 +26,6 @@ def cart_id(request):
 def cart_view(request,total=0,quantity=0,cart_items = None):
   tax =0
   grand_total =0
-  # saved =0
   try:
     if request.user.is_authenticated:
       cart_items = CartItem.objects.filter(
@@ -40,7 +40,6 @@ def cart_view(request,total=0,quantity=0,cart_items = None):
           # print(cart)
           # print(cart,cart_items,'kkkkkkkkkkkkkkkkk')
 
-      
     if cart_items is not None:
       for cart_item in cart_items:
         c_variant = cart_item.variant_id
@@ -51,9 +50,11 @@ def cart_view(request,total=0,quantity=0,cart_items = None):
           total +=(cart_item.product.offer_price * cart_item.quantity)
         else:
           total += (cart_item.product.price * cart_item.quantity)
+          print(total,'gggggggaaaaaaaaaaaa')
         quantity += cart_item.quantity
       tax = (2 * total)/100
       grand_total = total + tax
+      print(grand_total,'xcxxxxxxxxxxxxxxxxxccccccccc')
 
   except ObjectDoesNotExist:
     pass
@@ -94,16 +95,20 @@ def add_to_cart(request):
         if cart_item.quantity >= product.stock :
           cart_item.quantity = product.stock
           cart_item.save()
+          status = True
         else:
           cart_item.quantity += 1       
           cart_item.save()
+          status = True
       #create a new cart item
       else:
         cart_item = CartItem.objects.create(
           product = product, quantity = 1, user = current_user, variant_id = variant.variation_id
           )
         cart_item.save()
-      return redirect('cart_view')
+        print(cart_item,'kkkkkkkkkkkkkkkkk')
+        status = False
+      return JsonResponse({"status" : status})
 
     else:  
 
@@ -114,16 +119,19 @@ def add_to_cart(request):
         if cart_item.quantity >= product.stock :
           cart_item.quantity = product.stock
           cart_item.save()
+          status = True
         else:
           cart_item.quantity += 1       
           cart_item.save()
+          status = True
       #create a new cart item
       else:
         cart_item = CartItem.objects.create(
           product = product, quantity = 1, user = current_user, variant_id = 0
           )
         cart_item.save()
-      return redirect('cart_view')
+        status = False
+      return JsonResponse({"status" : status })
 
 
     # try:
@@ -150,18 +158,20 @@ def add_to_cart(request):
             if cart_item.quantity >= product.stock :
               cart_item.quantity = product.stock
               cart_item.save()
+              status = True
             else:
               cart_item.quantity += 1       
               cart_item.save()
-            return redirect('cart_view')
+              status = True
+            return JsonResponse({"status": status})
         else:
             # print('ggggggggggggggggg')
             cart_item = CartItem.objects.create(
             product = product, quantity = 1, cart = cart, variant_id = var_id_
             )
             cart_item.save()
-            # print("Saveeeeeeeeeeeeee  ")
-            return redirect('cart_view')
+            status = False
+            return JsonResponse({"status" : status})
       else:
         if CartItem.objects.filter( product=product, cart=cart, variant_id= 0).exists():
           # print('kkkkkkkkkkkkkkkkkkkkk')
@@ -169,16 +179,20 @@ def add_to_cart(request):
           if cart_item.quantity >= product.stock :
             cart_item.quantity = product.stock
             cart_item.save()
+            status = True
+
           else:
             cart_item.quantity += 1       
             cart_item.save()
-          return redirect('cart_view')
+            status = True
+          return JsonResponse({"status" : status })
         else:
           cart_item = CartItem.objects.create(
           product = product, quantity = 1, cart = cart, variant_id = 0
           )
           cart_item.save()
-          return redirect('cart_view')
+          status = False
+          return JsonResponse({"status" : status })
     
     except Cart.DoesNotExist : 
       cart = Cart.objects.create(cart_id = cart_id(request))
@@ -186,11 +200,13 @@ def add_to_cart(request):
       if variant is not '0':
         cart_item = CartItem.objects.create(product = product, quantity = 1,cart = cart , varient_id = var_id_)
         cart_item.save()
-        return redirect('cart_view')
+        status =False
+        return JsonResponse({"status" : status })
       else:
         cart_item = CartItem.objects.create(product = product, quantity= 1, cart = cart)
         cart_item.save()
-        return redirect("cart_view")
+        status = False
+        return JsonResponse({"status" : status })
 
     # try:
     #   cart_item = CartItem.objects.get(product=product,cart=cart)
@@ -208,6 +224,9 @@ def add_to_cart(request):
 
 #Increasing the quantity
 def quantity_increase(request):
+  total= 0 
+  grand_total = 0
+  tax=0
   product_id = request.GET.get('id')
   v_id = request.GET.get('v_id')
   print(v_id,product_id,'5555555555555')
@@ -224,20 +243,20 @@ def quantity_increase(request):
           cart_item.quantity = product.stock
           cart_item.save()
         else:
-          cart_item.quantity +=1
           cart_item.save()
-          return redirect('cart_view')
     else:
       # print('iiiiiiiiiiiiiiiiiiiiiiii')
       if CartItem.objects.filter(product = product,user = request.user,variant_id = 0).exists():
         cart_item = CartItem.objects.get(product = product, user = request.user, variant_id= 0)
         if cart_item.quantity >= product.stock:
           cart_item.quantity = product.stock
-          cart_item.save()
+          cart_item.save() 
         else:
-          cart_item.quantity +=1
           cart_item.save()
-          return redirect('cart_view')
+    cart_items = CartItem.objects.filter(
+        user = request.user, is_active =True
+        ).order_by('-id')
+
   else:
     #if the user is not authenitcate
     try:
@@ -255,9 +274,7 @@ def quantity_increase(request):
           cart_item.quantity = product.stock
           cart_item.save()
         else:
-          cart_item.quantity += 1
-          cart_item.save()
-          return redirect('cart_view')
+          cart_item.save()  
     else:
       print(v_id,'DDDDDDDDDDDDDDDDDD')
       if CartItem.objects.filter(product = product,cart = cart,variant_id = 0).exists():
@@ -266,49 +283,91 @@ def quantity_increase(request):
           cart_item.quantity = product.stock
           cart_item.save()
         else:
-          cart_item.quantity +=1
           cart_item.save()
-          return redirect('cart_view')
-    
+    cart_items = CartItem.objects.filter(cart = cart,is_active = True)
 
-
+  if cart_item.quantity :
+      quantity = cart_item.quantity + 1
+      cart_item.quantity = cart_item.quantity + 1 
+      cart_item.save()
+      if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
+        total +=(cart_item.product.offer_price * cart_item.quantity)
+      else:
+        total += (cart_item.product.price * cart_item.quantity)
+      cart_item.save()
+      sub = cart_item.sub_total()
+      total=0
+      for cart_item in cart_items:
+        if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
+          total +=(cart_item.product.offer_price * cart_item.quantity)
+        else:
+          total += (cart_item.product.price * cart_item.quantity)
+      print(total,'wwwwwwwwwwwrrrrrrrrrr')
+      
+      tax = (2 * total)/100
+      grand_total = total + tax        
+  return JsonResponse({"quantity":quantity,"total":total,"tax":tax,"grand_total":grand_total,"sub": sub})
+   
 
 
 #DECREASING THE QUANTITY OF ITEM IN CART VIEW
 def remove_item_cart(request):
+  total =0
+  tax =0
+  grand_total=0
   product_id = request.GET.get('id')
   product = get_object_or_404(Product,id = product_id)
   v_id = request.GET.get('v_id')
-  print(product_id,v_id,'dsdsdsdsddddddddddddddddd')
   try:
     if request.user.is_authenticated:
-      cart_item = CartItem.objects.filter(product = product,user = request.user,variant_id = v_id).exists()
+      cart_items = CartItem.objects.filter(product = product,user = request.user,variant_id = v_id).exists()
       if v_id is not '0':
-        print('[[[[[[[[[pppppppppppppp')
         variant = Variation.objects.get(variation_id = v_id)
         v_id = variant.variation_id
         cart_item = CartItem.objects.get(product = product,user = request.user,variant_id = v_id)
       else:
         cart_item = CartItem.objects.get(product = product,user = request.user,variant_id = 0)
+      cart_items = CartItem.objects.filter(
+        user = request.user, is_active =True
+        ).order_by('-id')
+
     else:
       #if user not authenticated
       cart= Cart.objects.get(cart_id = cart_id(request))
-      cart_item = CartItem.objects.filter(product = product,cart = cart, variant_id =v_id).exists()
+      cart_items = CartItem.objects.filter(product = product,cart = cart, variant_id =v_id).exists()
       if v_id is not '0':
         variant = Variation.objects.get(variation_id = v_id)
         v_id = variant.variation_id
         cart_item = CartItem.objects.get(product = product, cart=cart,variant_id = v_id)
       else:
         cart_item = CartItem.objects.get(product = product,cart=cart,variant_id =0)
-    if cart_item.quantity > 1 :
-      cart_item.quantity = cart_item.quantity - 1 
-      cart_item.save()
-    else:
-     cart_item.save()
+      cart_items = CartItem.objects.filter(cart = cart,is_active = True)
+      
+    
+    if cart_item.quantity :
+      if cart_item.quantity > 1 :
+        quantity = cart_item.quantity - 1
+        cart_item.quantity = cart_item.quantity - 1 
+        cart_item.save()
+        if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
+          total +=(cart_item.product.offer_price * cart_item.quantity)
+        else:
+          total += (cart_item.product.price * cart_item.quantity)
+        cart_item.save()
+        sub = cart_item.sub_total()
+        total=0
+        for cart_item in cart_items:
+          if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
+            total +=(cart_item.product.offer_price * cart_item.quantity)
+          else:
+            total += (cart_item.product.price * cart_item.quantity)
+        tax = (2 * total)/100
+        grand_total = total + tax
+       
+
   except:
     pass
-  return redirect('cart_view')
-
+  return JsonResponse({"quantity":quantity,"total":total,"tax":tax,"grand_total":grand_total,"sub": sub})
 
 #DELETING THE ITEM FROM THE CART
 def remove_from_cart(request):
@@ -323,7 +382,8 @@ def remove_from_cart(request):
     cart = Cart.objects.get(cart_id = cart_id(request))
     cart_item = CartItem.objects.get(product = product, cart = cart,variant_id = v_id)
   cart_item.delete()
-  return redirect('cart_view')
+  status = True
+  return JsonResponse({"status":status})
 
 
 

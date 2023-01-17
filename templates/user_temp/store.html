@@ -462,21 +462,42 @@
   
 <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 <script>
       
-function addcat(id){
-    color = 0
-    console.log(color,"LLLLLLL")
-   
-      $.ajax({
-        type:"GET",
-        url : "{% url 'add_to_cart'  %}",
-        data : {"id" : id ,"color":color},
-       
-    });
+    function addcat(id){
+        color = $("#value1").val()
+        console.log(color,"LLLLLLL")
+        if (color !=''){
+          console.log("true")
+        }
+        else{
+          color = 0
+        }
+    
+        Swal.fire({
+            title: 'Added to cart successfully!!',
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type:"GET",
+                    url : "{% url 'add_to_cart'  %}",
+                    data : {"id" : id ,"color":color},
+           
+                });
+            }
+        })
     }
 </script>
   <!-- Main Wrapper End -->
