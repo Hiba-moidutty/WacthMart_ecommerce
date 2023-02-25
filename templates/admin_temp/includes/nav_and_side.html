@@ -162,9 +162,9 @@
         </ul> 
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown d-none d-lg-block">
-            <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">View Reports</a>
+            <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">View Report</a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
-              <h6 class="p-3 mb-0">Reports</h6>
+              <h6 class="p-3 mb-0">Report</h6>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item" href={% url 'sales_report' %}>
                 <div class="preview-thumbnail">
@@ -282,7 +282,7 @@
               <p class="p-3 mb-0 text-center">See all notifications</p>
             </div>
           </li> {% endcomment %}
-          <li class="nav-item dropdown">
+          {% comment %} <li class="nav-item dropdown">
             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
               <div class="navbar-profile">
                 <img class="img-xs rounded-circle" src="{% static 'admin_static/images/faces/face15.jpg' %}" alt="">
@@ -294,17 +294,17 @@
               <h6 class="p-3 mb-0">Profile</h6>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
+                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-dark rounded-circle">
                     <i class="mdi mdi-settings text-success"></i>
                   </div>
-                </div>
-                <div class="preview-item-content">
+                </div> 
+                 <div class="preview-item-content">
                   <p class="preview-subject mb-1">Settings</p>
-                </div>
+                </div> 
               </a>
               <div class="dropdown-divider"></div>
-                {% comment %} <a class="dropdown-item preview-item">
+                 <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-dark rounded-circle">
                     <i class="mdi mdi-logout text-danger"></i>
@@ -315,11 +315,11 @@
                     <span class="preview-subject mb-1">Logout</span>
                   </a>
                 </div>
-              </a>   {% endcomment %}
-              {% comment %} <div class="dropdown-divider"></div>
+              </a>   
+            <div class="dropdown-divider"></div>
               <p class="p-3 mb-0 text-center">Advanced settings</p>
-            </div> {% endcomment %}
-          </li>
+            </div> 
+          </li> {% endcomment %}
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="mdi mdi-format-line-spacing"></span>
