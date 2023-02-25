@@ -114,7 +114,32 @@
                     </tbody>
                   </table>
                   <div class="pagination-area">
-                    <nav>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination">
+                        {% if orders.has_previous %}
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ orders.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% for i in orders.paginator.page_range %}
+                          {% if orders.number == i %}
+                        <li class="page-item active"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                        {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if orders.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ orders.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+                    {% comment %} <nav>
                       <p class="page-numbers">
                       
                         {% if orders.has_previous %}
@@ -139,7 +164,7 @@
                         {% endif %}
                        
                       </p>
-                    </nav>
+                    </nav> {% endcomment %}
                   </div>
                 </div>
               </div>

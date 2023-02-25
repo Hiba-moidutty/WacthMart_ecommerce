@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block content %}
+<style>
+    body {
+        background-color: #242424;
+      }
+    
+  </style>
 <!-- Main Wrapper Start -->
 <div class="wrapper bg--shaft">
 
@@ -208,186 +214,12 @@
                                           </div>
                                         </div>  
                                       </div>
-                                      <!-- <div class="form-row mb--30">
-                                          <div class="form__group col-12">
-                                              <div class="custom-checkbox">
-                                                  <input type="checkbox" name="createaccount" id="createaccount" class="form__checkbox">
-                                                  
-                                                  <label for="createaccount" class="form__checkbox--label">Create An Account?</label>
-                                              </div>
-                                              <div class="new-account hide-in-default">
-                                                  <p>Create an account by entering the information below. If you are a returning customer please login at the top of the page.</p>
-                                                  <label for="newPass" class="form__label">Password <span>*</span></label>
-                                                  <input type="text" name="newPass" id="newPass" class="form__input form__input--2">
-                                              </div>
-                                          </div>
-                                      </div>  -->
-                                      <!-- <div class="form-row mb--30">
-                                          <div class="form__group col-12">
-                                              <div class="custom-checkbox">
-                                                  <input type="checkbox" name="shipdifferetads" id="shipdifferetads" class="form__checkbox">
-                                                  
-                                                  <label for="shipdifferetads" class="form__checkbox--label shipping-label">Ship To A Different Address?</label>
-                                              </div>
-                                              <div class="ship-box-info hide-in-default mt--30">
-                                                  <div class="form-row mb--30">
-                                                      <div class="form__group col-md-6 mb-sm--30">
-                                                          <label for="shipping_fname" class="form__label">First Name <span>*</span></label>
-                                                          <input type="text" name="shipping_fname" id="shipping_fname" class="form__input form__input--2">
-                                                      </div>
-                                                      <div class="form__group col-md-6">
-                                                          <label for="shipping_lname" class="form__label">Last Name <span>*</span></label>
-                                                          <input type="text" name="shipping_lname" id="shipping_lname" class="form__input form__input--2">
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-row mb--30">
-                                                      <div class="form__group col-12">
-                                                          <label for="shipping_company" class="form__label">Company</label>
-                                                          <input type="text" name="shipping_company" id="shipping_company" class="form__input form__input--2">
-                                                      </div>
-                                                  </div>
-                                                  
-                                                  <div class="form-row mb--30">
-                                                      <div class="form__group col-12">
-                                                          <label for="shipping_streetAddress" class="form__label">Street Address</label>
-                                                          <input type="text" name="shipping_streetAddress" id="shipping_streetAddress" class="form__input form__input--2">
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-row mb--30">
-                                                      <div class="form__group col-12">
-                                                          <label for="shipping_apartment" class="form__label">Apartment, suite, unit etc. (optional)</label>
-                                                          <input type="text" name="shipping_apartment" id="shipping_apartment" class="form__input form__input--2">
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-row mb--30">
-                                                      <div class="form__group col-12">
-                                                          <label for="shipping_city" class="form__label">Town/City <span>*</span></label>
-                                                          <input type="text" name="shipping_city" id="shipping_city" class="form__input form__input--2">
-                                                      </div>
-                                                  </div>
-                                                  
-                                                  <div class="form-row mb--30">
-                                                      <div class="form__group col-12">
-                                                          <label for="shipping_zip" class="form__label">Post/Zip Code <span>*</span></label>
-                                                          <input type="text" name="shipping_zip" id="shipping_zip" class="form__input form__input--2">
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-row mb--30">
-                                                      <div class="form__group col-md-6 mb-sm--30">
-                                                          <label for="shipping_phone" class="form__label">Phone</label>
-                                                          <input type="text" name="shipping_phone" id="shipping_phone" class="form__input form__input--2">
-                                                      </div>
-                                                      <div class="form__group col-md-6">
-                                                          <label for="shipping_email" class="form__label">Email Address <span>*</span></label>
-                                                          <input type="email" name="shipping_email" id="shipping_email" class="form__input form__input--2">
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>  -->
-                                      <!-- <div class="form-row">
-                                          <div class="form__group col-12">
-                                              <label for="orderNotes" class="form__label">Order Notes</label>
-                                              <textarea class="form__input form__input--2 form__input--textarea" id="orderNotes" name="orderNotes" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
-                                          </div>
-                                      </div> -->
+                                      
                                   </form>
                               </div>
                           </div>
                           <div class="col-lg-6 mt-md--30">
-                              <!-- <div class="order-details">
-                                  <h3 class="heading-tertiary">Your Order</h3>
-                                  <div class="order-table table-content table-responsive mb--30">
-                                      <table class="table">
-                                          <thead>
-                                              <tr>
-                                                  <th>Product</th>
-                                                  <th>Total</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody>
-                                              <tr>
-                                                  <td>Aliquam lobortis est <strong>x1</strong></td>
-                                                  <td>$80.00</td>
-                                              </tr>
-                                              <tr>
-                                                  <td>Auctor gravida enim <strong>x1</strong></td>
-                                                  <td>$60.00</td>
-                                              </tr>
-                                          </tbody>
-                                          <tfoot>
-                                              <tr class="cart-subtotal">
-                                                  <th>Cart Subtotal</th>
-                                                  <td>$56.00</td>
-                                              </tr>
-                                              <tr class="shipping">
-                                                  <th>Shipping</th>
-                                                  <td>
-                                                      <div class="shipping-method">
-                                                          <div class="custom-radio">
-                                                              <input type="radio" name="shipping_method" id="flat_rate" checked>
-                                                              <label for="flat_rate">Flat Rate: £7.00</label>
-                                                          </div>
-                                                          <div class="custom-radio">
-                                                              <input type="radio" name="shipping_method" id="free_shipping">
-                                                              <label for="free_shipping">Free Shipping</label>
-                                                          </div>
-                                                      </div>
-                                                  </td>
-                                              </tr>
-                                              <tr class="order-total">
-                                                  <th>Order Total</th>
-                                                  <td><span class="order-total-ammount">$56.00</span></td>
-                                              </tr>
-                                          </tfoot>
-                                      </table>
-                                  </div>
-                                  <div class="checkout-payment">
-                                      <form action="#" class="payment-form">
-                                          <div class="payment-group">
-                                              <div class="custom-radio payment-radio">
-                                                  <input type="radio" name="payment-method" id="cheque" checked>
-                                                  <label class="payment-label" for="cheque">Cheque Payment</label>
-                                              </div>
-                                              <div class="payment-info">
-                                                  <p>Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                                              </div>
-                                          </div>
-                                          <div class="payment-group">
-                                              <div class="custom-radio payment-radio">
-                                                  <input type="radio" name="payment-method" id="cash">
-                                                  <label class="payment-label" for="cash">Cash On Delivery</label>
-                                              </div>
-                                              <div class="payment-info">
-                                                  <p>Pay with cash upon delivery.</p>
-                                              </div>
-                                          </div>
-                                          <div class="payment-group">
-                                              <div class="custom-radio payment-radio">
-                                                  <input type="radio" value="paypal" name="payment-method" id="paypal">
-                                                  <label class="payment-label" for="paypal">
-                                                      Paypal 
-                                                      <img src="assets/img/others/AM_mc_vs_ms_ae_UK.png" alt="payment">
-                                                      <a href="https://www.paypal.com/gb/webapps/mpp/paypal-popup">What is PayPal?</a>
-                                                  </label>
-                                              </div>
-                                              <div class="payment-info paypal">
-                                                  <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
-                                              </div>
-                                          </div>
-                                          <div class="payment-group">
-                                              <div class="custom-checkbox">
-                                                  <input type="checkbox" name="termscondition" id="termscondition" class="form__checkbox">
-                                                  
-                                                  <label for="termscondition" class="terms-condition-label payment-label">I have read and agree to the website <a href="index.html">terms and conditions.</a></label>
-                                              </div>
-                                          </div>
-                                          <div class="payment-btn-group">
-                                              <button type="submit" class="btn btn-style-3">Place Order</button>
-                                          </div>
-                                      </form>
-                                  </div>
-                              </div> -->
+                              
                           </div>
                       </div>
                   </div>

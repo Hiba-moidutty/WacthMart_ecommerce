@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block content %}
+<style>
+  body {
+      background-color: #242424;
+    }
+  
+</style>
 <!-- Main Wrapper Start -->
 <div class="wrapper bg--shaft">
 
@@ -46,7 +52,6 @@
                         </div>
                         <div class="col-lg-10">
                             <div class="user-dashboard-tab__head nav flex-column" role="tablist" aria-orientation="vertical">
-                              
                                     <div class="billing-address mb--20">
                                         <h4>ADDRESS</h4>
                                         {% for ad in address %}
@@ -80,10 +85,9 @@
                                       </div>
                                     </div>
                                   <!-- end for delete -->
-                                       
-                                    {% endfor %}
+                                  {% endfor %}
+                                  <br>
                                   <a href="{% url 'add_address' %}"  class="btn btn-medium btn-style-1 expand_action">Add New Address</a>
-                                
                             </div>
                         </div>
                     </div>
