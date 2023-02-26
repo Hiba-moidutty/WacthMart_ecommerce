@@ -276,18 +276,16 @@
                                     </div>
                                     {% endfor %}
                                   </div>
-                                  <div class="filter-color">
+                                  {% comment %} <div class="filter-color">
                                     <u><h2 class="filter-heading"><strong>Sub Categories</strong></h2></u>
                                     {% for sub in sub_category %}
-                                    {% comment %} {% for category in links %} {% endcomment %}
                                   <div class="product-content" >
-                                      {% comment %} <input class="form-check-input" value="1" type="radio" name="gridradio" id="gridRadios2" value="option2"> {% endcomment %}
                                       <h4><a href="{{sub.get_url}}" class="mainmenu__link">
                                           {{sub.subcategory_name}}
                                       </a></h4>
                                   </div>
                                   {% endfor %}
-                                  </div>
+                                  </div> {% endcomment %}
                               </div>
                               <div class="banner-static">
                                   {% comment %} <a href="#">

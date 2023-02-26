@@ -45,7 +45,7 @@ def store(request,category_slug = None,sub_category_slug=None):
   
   elif category_slug and sub_category_slug is not None :
     subcategories = get_object_or_404(SubCategory,slug = sub_category_slug)
-    products = Product.objects.filter(subcategory =subcategories,category = category_slug)
+    products = Product.objects.filter(subcategory = subcategories,category = category_slug)
     product_count = products.count()
     paginator=Paginator(products,1)
     page=request.GET.get('page')
@@ -57,7 +57,7 @@ def store(request,category_slug = None,sub_category_slug=None):
     page=request.GET.get('page')
     data=paginator.get_page(page)
     product_count = products.count()
-    print('9999999999999999',product_count,products)
+    # print('9999999999999999',product_count,products)
 
   context = {
     'products' : data,
