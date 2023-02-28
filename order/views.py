@@ -47,8 +47,8 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
 
   tax = (2 * total)/100
   grand_total = total + tax
-  p_method = request.POST['p_method']
-  # print(p_method,'kkkkkkkkkkkkkkkkkkkkk')
+  p_method = request.POST.get('p_method')
+  print(p_method,'kkkkkkkkkkkkkkkkkkkkk')
   if request.POST and p_method == 'cash on delivery':
     # print('llllllllllllllllllllllllll')
     address_id = request.POST.get('i_id')
@@ -65,17 +65,25 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
         status = True
       return JsonResponse({'status' : status})
 
-  # if request.POST and p_method == 'razorpay':
-  #   order_number = request.POST.get('order_number')
-  #   payment_id = request.POST.get('payment_id')
-  #   address_id = request.POST.get('i_id')
-  #   get_address = Address.objects.get(id = address_id)
 
-  #   if p_method is not None:
-  #     for item in cart_items:
-  #       Order(product = item.product, user = current_user , address = get_address , status = "placed" , amount = item.product.price ,quantity = item.quantity , order_number = order_number, total_price = grand_total, method = p_method ,tax = tax).save()
-  #       status = True
-  #       return JsonResponse({'status' : status})
+  if request.POST and p_method == 'razorpay':
+    print("sfdasdasdsadasdasdasdads")
+    order_number = str(random.randint(1000,9999))
+    # payment_id = request.POST.get('payment_id')
+    address_id = request.POST.get('i_id')
+    get_address = Address.objects.get(id = address_id)
+
+    if p_method is not None:
+      
+      for item in cart_items:
+        Order(product = item.product, user = current_user ,
+         address = get_address , status = "placed" , amount = item.product.price ,
+         quantity = item.quantity , order_number = order_number, 
+         total_price = grand_total, payment_method = p_method ,tax = tax, payment_id = None).save()
+        status = True
+      return JsonResponse({'status' : status})
+      
+    return redirect('order_success')
 
 
   if request.POST and p_method == 'Paypal':
@@ -91,7 +99,7 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
          address = get_address , status = "placed" , amount = item.product.price ,
          quantity = item.quantity , order_number = order_number, 
          total_price = grand_total, payment_method = p_method ,tax = tax, payment_id = payment_id ).save()
-        print(get_address)
+        # print(get_address)
         status = True
       return JsonResponse({'status' : status})
       

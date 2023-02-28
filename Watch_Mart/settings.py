@@ -88,6 +88,8 @@ WSGI_APPLICATION = 'Watch_Mart.wsgi.application'
 
 AUTH_USER_MODEL = 'accounts.Account'
 
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 

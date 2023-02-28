@@ -314,12 +314,12 @@ new Chart(document.getElementById("sales"), {
 new Chart(document.getElementById("payment_status"), {
   type: 'doughnut',
   data: {
-    labels: ["Cash On Delivery", "PayPal"],
+    labels: ["Cash On Delivery", "PayPal","Razorpay"],
     datasets: [
       {
         label: "Payment Mode",
         backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-        data: [{{cod_m}},{{paypal_m}}]
+        data: [{{cod_m}},{{paypal_m}},{{razorpay_m}}]
       }
     ]
   },

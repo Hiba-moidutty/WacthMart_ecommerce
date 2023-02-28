@@ -244,7 +244,7 @@
                                   
                               </div>
                           <div class="col-lg-6 mt-md--30">
-                              <div class="order-details">
+                              < class="order-details">
                                   <h3 class="heading-tertiary">Your Order</h3>
                                   <div class="order-table table-content table-responsive mb--30">
                                       <table class="table">
@@ -285,50 +285,22 @@
                                   </div>
                                   <div class="checkout-payment">
                                       <!-- <form action="#" class="payment-form"> -->
+                                          <div class="payment-btn-group d-grid">
+                                                <button type="button" name="submit"  onclick = "cod()"  class="btn btn-info "><strong>Cash on Delivery</strong></button>
+                                          </div>
+                                          <br>
                                           <div class="payment-group">
-                                              <!-- <div class="custom-radio payment-radio">
-                                                  <input type="radio" name="payment-method" id="cheque" checked>
-                                                  <label class="payment-label" for="cheque">Cheque Payment</label>
-                                              </div> -->
-                                              <!-- <div class="payment-info">
-                                                  <p>Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                                              </div> -->
-                                          </div>
-                                          <div class="payment-btn-group m-3">
-                                            
-                                                <button type="button" name="submit"  onclick = "cod()"  class="btn btn-info">Cash on Delivery</button>
-                                          </div>
-                                              <div class="payment-info">
-                                                  {% comment %} <p>Pay with cash upon delivery.</p> {% endcomment %}
-                                              </div>
-                                          </div>
-                                          <div class="payment-group">
-
-                                              <div class="payment-info paypal">
+                                              <div>
+                                                {% comment %} <h6>Pay via Paypal</h6> {% endcomment %}
                                                 <div id="paypal-button-container"></div>
-                                                  <p>Pay via Razorpay; you can pay with your credit card if you don’t have a Razorpay account.</p>
                                               </div> 
                                           </div>
                                           <div class="payment-group">
-                                            <div class="custom-radio payment-radio">
-                                                <input type="radio" id="rzp-button1">
-                                                <label class="payment-label" for="paypal">
-                                                    Razorpay
-                                                    {% comment %} <img src="assets/img/others/AM_mc_vs_ms_ae_UK.png" alt="payment"> {% endcomment %}
-                                                    {% comment %} <a href="https://www.paypal.com/gb/webapps/mpp/paypal-popup">What is PayPal?</a> {% endcomment %}
-                                                </label>
-                                            </div>
-                                            <div class="payment-info paypal">
-                                                <p>Pay via Razorpay; you can pay with your credit card if you don’t have a Razorpay account.</p>
+                                            {% comment %} <h6>Pay via Razorpay</h6> {% endcomment %}
+                                            <div class="btn btn-warning d-grid">
+                                              <div id="rzp-button1"><strong>Razorpay</strong></div>
                                             </div> 
                                         </div>
-                                          <div class="payment-group">
-                                              {% comment %} <div class="custom-checkbox">
-                                                  <input type="checkbox" name="termscondition" id="termscondition" class="form__checkbox">
-                                                  
-                                                  <label for="termscondition" class="terms-condition-label payment-label">I have read and agree to the website <a href="index.html">terms and conditions.</a></label>
-                                              </div> {% endcomment %}
-                                          </div>
                                           <div class="payment-btn-group">
                                               <a href="{% url 'store' %}"  class="btn btn-style-3" >Continue Shopping</a>
                                           </div>
@@ -368,6 +340,7 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script src="https://www.paypal.com/sdk/js?client-id=AZ54SF_9XhjbZoC2GRn4bZUwGSJmxPhMlHREiWidNqm9zMfdFLRW4LCvxjAoXx1FMusHTxTKGolAyCaP&currency=USD"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -423,8 +396,77 @@
 
 
 {% comment %} for integrating Razorpay {% endcomment %}
+ <script>
+    var options = {
+        "key": "rzp_test_ow6sQKwWcM8BIK", // Enter the Key ID generated from the Dashboard
+        "amount":"{{grand_total}}"*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Acme Corp",
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        //"order_id": "{{order_id}}" ,  //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+          var address=document.getElementById('address').value;
+          if (address == undefined){
+              
+              swal.fire("Alert", "All Fields are required", "error");
+              return false;
+          }
+      
+                  
+          $.ajax( {
+              type: "POST",
+              url: "{% url 'place_order' %}",
+              data: {
+                  coupon :  $("#ccode").val(),
+                  p_method : 'razorpay',
+                  i_id: address,
+                  //payment_id :  orderData.id,
+                  //order_id :response.razorpay_order_id,
+                  signature:response.razorpay_signature,
+                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                  dataType: "json",
+              },
+              success: (response) => {
+                  console.log("success"),
+                  
+                  window.location="{% url 'order_success' %}" 
+                  
+              },error: function() {
+                  alert('Error occured 101');
+              }
+          
+          })
 
-
+        },
+        "prefill": {
+            "name": "User",
+            "email": "user@example.com",
+            "contact": "9544633437"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response){
+          //   alert(response.error.code);
+          //   alert(response.error.description);
+          //   alert(response.error.source);
+          //   alert(response.error.step);
+          //   alert(response.error.reason);
+          //   alert(response.error.metadata.order_id);
+          //   alert(response.error.metadata.payment_id);
+          swal("Payment failed", "Order pending", "error").then(function () { window.location.reload() })
+    });
+    document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+</script>
 
 
     {% comment %} for integrating Paypal {% endcomment %}
@@ -497,6 +539,7 @@
 
     </script>
     
+
     <script>
         function removecoupon(){
             event.preventDefault()

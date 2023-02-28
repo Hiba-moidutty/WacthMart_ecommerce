@@ -50,7 +50,7 @@ def admin_home(request):
       #payment method
       cod_m = Order.objects.filter(payment_method ='cash on delivery').count()
       paypal_m = Order.objects.filter(payment_method = 'Paypal').count()
-     
+      razorpay_m = Order.objects.filter(payment_method = 'razorpay').count()
        
       #monthly sales
       today   = datetime.now()
@@ -81,6 +81,7 @@ def admin_home(request):
       'total_orders' : total_orders,
       'cod_m' : cod_m,
       'paypal_m' : paypal_m,
+      'razorpay_m': razorpay_m,
       'sales' : sales,
       'dates' : dates,
       'returns' : returns, 

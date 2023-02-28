@@ -369,6 +369,7 @@ def remove_item_cart(request):
     pass
   return JsonResponse({"quantity":quantity,"total":total,"tax":tax,"grand_total":grand_total,"sub": sub})
 
+
 #DELETING THE ITEM FROM THE CART
 def remove_from_cart(request):
   product_id = request.GET.get('id')
@@ -430,6 +431,7 @@ def checkout(request, total=0, quantity=0, cart_items = None):
       'grand_total' : grand_total,
       'coupon' : coupon,
       'applied':applied,
-      'address' : address
+      'address' : address,
+      'order_id':12
     }
   return render(request,'user_temp/checkout.html',context)
