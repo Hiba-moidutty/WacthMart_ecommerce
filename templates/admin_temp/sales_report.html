@@ -141,31 +141,30 @@
                     </tbody>
                   </table>
                   <div class="pagination-area">
-                    <nav>
-                      <p class="page-numbers">
-                      
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination">
                         {% if orders.has_previous %}
-                        <a href="?page={{ orders.previous_page_number}}">&lt;</a>
-                              
-                          {% endif %}
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ orders.previous_page_number}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                        {% endif %}
                         {% for i in orders.paginator.page_range %}
-                              
                           {% if orders.number == i %}
-                        <a class="page-number active" href="?page={{i}}">{{i}}</a>
-            
+                        <li class="page-item active"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
                         {% else %}
-                       <a class="page-number" href="?page={{i}}">{{i}}</a>
-                      
-                        {% endif %}
-                      
+                        <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                          {% endif %}
                         {% endfor %}
-                        
                         {% if orders.has_next %}
-                        <a class="page-number next" href="?page={{ orders.next_page_number}}"><i class="icofont-long-arrow-right"></i></a>
-                        
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ orders.next_page_number}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
                         {% endif %}
-                       
-                      </p>
+                      </ul>
                     </nav>
                   </div>
                 </div>

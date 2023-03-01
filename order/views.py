@@ -48,7 +48,6 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
   tax = (2 * total)/100
   grand_total = total + tax
   p_method = request.POST.get('p_method')
-  ordernote = request.POST.get('ordernote')
   if request.POST and p_method == 'cash on delivery':
     print('llllllllllllllllllllllllll')
     address_id = request.POST.get('i_id')
@@ -61,7 +60,7 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
         Order(product = item.product, user = current_user , 
         address = get_address , status = "placed" , amount = item.product.price ,
         quantity = item.quantity , order_number = order_number, total_price = grand_total,
-        payment_method = p_method ,tax = tax, ordernote = ordernote).save()
+        payment_method = p_method ,tax = tax).save()
         status = True
       return JsonResponse({'status' : status})
 
@@ -79,7 +78,7 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
         Order(product = item.product, user = current_user ,
          address = get_address , status = "placed" , amount = item.product.price ,
          quantity = item.quantity , order_number = order_number, 
-         total_price = grand_total, payment_method = p_method ,tax = tax, payment_id = None,ordernote = ordernote).save()
+         total_price = grand_total, payment_method = p_method ,tax = tax, payment_id = None).save()
         status = True
       return JsonResponse({'status' : status})
       
@@ -98,7 +97,7 @@ def place_order(request, total = 0 , quantity = 0,cart_items = None):
         Order(product = item.product, user = current_user ,
          address = get_address , status = "placed" , amount = item.product.price ,
          quantity = item.quantity , order_number = order_number, 
-         total_price = grand_total, payment_method = p_method ,tax = tax, payment_id = payment_id , ordernote = ordernote).save()
+         total_price = grand_total, payment_method = p_method ,tax = tax, payment_id = payment_id ).save()
         # print(get_address)
         status = True
       return JsonResponse({'status' : status})

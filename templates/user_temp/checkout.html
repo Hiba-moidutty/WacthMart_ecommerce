@@ -96,13 +96,13 @@
                                         <label for="billing_lname" class="form__label">Phone Number <span>*</span></label>
                                         {{form.phone_number}}
                                       </div> -->
-                                      <div class="form-row mb--30">
+                                      {% comment %} <div class="form-row mb--30">
                                           <div class="form__group col-12">
                                               <label for="billing_country" class="form__label">Email</label>
                                         {{form.email}}
 
                                           </div>
-                                      </div>
+                                      </div> {% endcomment %}
                                       <div class="form-row mb--30">
                                           <div class="form__group col-12">
                                               <label for="billing_streetAddress" class="form__label">Address</label>
@@ -121,14 +121,12 @@
 
                                           <!-- </div> -->
                                       <!-- </div> -->
-                                      <div class="form-row mb--30">
+                                      {% comment %} <div class="form-row mb--30">
                                           <div class="form__group col-12">
                                               <label for="billing_city" class="form__label">Order Note<span>*</span></label>
                                                <input type="text" name="ordernote"  class="form__input form__input--2"> 
-                                        
-
                                           </div>
-                                      </div>
+                                      </div> {% endcomment %}
                                       <!-- <div class="form-row mb--30">
                                           <div class="form__group col-12">
                                               <label for="billing_district" class="form__label">District <span>*</span></label>
