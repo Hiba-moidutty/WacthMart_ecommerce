@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Mart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+ 
+</head>
+<body>
+
+
+     <div class="container">
+
+        <div class="page-header">
+            <h1>Shop on Watch Mart</h1>
+        </div>
+        
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 body-main">
+                    <div class="col-md-12">
+                       <div class="row">
+                            <div class="col-md-4">
+                                <img  class="img-fluid" alt="Invoce Template" src="/dwell/media/images/LogoBlack.jpg" />
+                            </div>
+                            <div class="col-md-8 text-right">
+                                <h4 style="color: #F81D2D;"><strong>Watch Mart</strong></h4>
+                                <p>Marad,Kochi<br> Kerala
+                                  INDIA <br> 786934</p>
+                                <p>+91-2233775509</p>
+                                <p>watchmart#3480@gmail.com</p>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h2>INVOICE</h2>
+                                <h5>04485265807</h5>
+                            </div>
+                        </div>
+                        <br />
+                        <div>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Orderd Date</th>
+                                        <th class="text-left">User</th>
+                                        <th class="text-left">Product</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Deliverd to</th>
+                                        
+                                     </tr>
+                                  </thead>
+                                  <tbody class="text-center">
+                                      {% for i in Invoice %}
+                                          {% for j in i %}
+                                                
+                                     <tr>
+
+                                        <td>{{j.Date}}</td>
+                                        <td>{{j.User}}</td>
+                                        <td>{{j.Product}}</td>
+                                        <td>{{j.Quantity}}</td>
+                                        <td>{{j.Total}}</td>
+                                        <td>{{j.Address}}</td>
+                                      
+                                        
+                                     </tr>
+                                          {% endfor %}
+                                     {% endfor %}
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <div class="col-md-12">
+
+                                   <h4  style="color: #F81D2D;"><strong>Total:</strong></h4>
+                                    <h4 style="color: #F81D2D;"><strong><i class="fas fa-rupee-sign" area-hidden="true"></i>Rs. {{total_}} </strong></h4>
+                                    <br>
+                                <p><b>Date :</b> {{date_}} </p>
+                                <br />
+                                <!-- <p><b>Signature</b></p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+  
+</body>
+</html>

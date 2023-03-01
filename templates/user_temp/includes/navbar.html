@@ -6,7 +6,7 @@
             <div class="container">
                 <div class="row no-gutters align-items-center">
                     <div class="col-lg-8 d-flex align-items-center flex-column flex-lg-row">
-                        <p class="header-text">Free shipping on all domestic orders with coupon code <span>“Watches2023”</span></p>
+                        {% comment %} <p class="header-text">Free shipping on all domestic orders with coupon code <span>“Watches2023”</span></p> {% endcomment %}
                     </div>
                     <div class="col-lg-4">
                         <div class="header-top-nav d-flex justify-content-lg-end justify-content-center">
@@ -36,15 +36,14 @@
             <div class="container">
                 <div class="row no-gutters align-items-center">
                     <div class="col-md-5 col-sm-6 order-lg-1 order-2">
-                        <div class="contact-info">
+                        {% comment %} <div class="contact-info">
                             <img src="{% static 'user_static/img/icons/icon_phone.png' %}" alt="Phone Icon">
                             <p>Call us <br> Free Support: +91 22337 75590</p>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                     <div class="col-lg-2 col-12 order-lg-2 order-1 text-center">
-                        <a href="{% url 'user_home' %}" class="logo-box mb-md--30">
-                            <h3 alt="logo"><strong>WATCH MART</strong></h3>
-                            {% comment %} <img src="{% static 'user_static/img/logo/logo.png' %}" alt="logo"> {% endcomment %}
+                        <a href="{% url 'user_landingpg' %}" class="logo-box mb-md--30">
+                            <h3><strong>WATCH MART</strong></h3>
                         </a>
                     </div>
                     <div class="col-lg-5 col-md-7 col-sm-6 order-lg-3 order-3">
@@ -65,7 +64,7 @@
                                     <a href="wishlist.html" class="bordered-icon"><i class="fa fa-heart"></i></a>
                                 </li> {% endcomment %}
                                 <li class="mini-cart-icon">
-                                    <div class="mini-cart mini-cart--1">
+                                    <div class="mini-cart mini-cart--1 ">
                                         <a href="{% url 'cart_view' %}" class="mini-cart__dropdown-toggle bordered-icon" id="cartDropdown">
                                             <span class="mini-cart__count">{{cart_count}}</span>
                                             <i class="icon_cart_alt mini-cart__icon"></i>
