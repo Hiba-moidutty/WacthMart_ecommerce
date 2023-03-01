@@ -43,7 +43,7 @@ def admin_home(request):
   if request.user.is_superuser == True:
       total_users = Account.objects.filter(is_active = True).count()
       total_products = Product.objects.filter(is_available = True).count()
-      total_orders = Order.objects.filter(status='Delivered').count()
+      total_orders = Order.objects.filter(status='placed').count()
       total_revenue = Order.objects.filter(status='Delivered').aggregate(Sum('total_price'))['total_price__sum']
       # t= total_revenue
 
@@ -56,19 +56,16 @@ def admin_home(request):
       today   = datetime.now()
       current = today.strftime("%B %d, %Y")
       dates = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(order_items=Count('id')).order_by("order_date__date")
-      d = dates.count()
+      print(dates,"TTTTTTTTTTTTTTTTTTTTTTTTT")
       returns = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(return_items=Count('id',filter=Q(status="Cancelled"))).order_by("order_date__date")
-      r = returns.count()
-      sales   = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(sales = Count('id',filter=Q(status ="Delivered")),cancelled=Count('id',filter=Q(status="Cancelled"))).order_by("order_date__date")
-      s = sales.count()
-
-      monthly_orders=0
+      print(returns,"TTTTTTTTTTTTTTTTTTTTTTTTT")
+      sales   = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(sales = Count('id',filter=Q(status="Delivered")),cancelled=Count('id',filter=Q(status="Cancelled"))).order_by("order_date__date")
+      print(sales,"TTTTTTTTTTTTTTTTTTTTTTTTT")
+      monthly_orders = 0
       if request.GET.get('Month') !="0":
         currentmonth = datetime.now().month
         month1 = request.GET.get('Month')
-        print(month1,'vvvvvvvvvvvvvvvvvv')
         if month1  is not None and month1 !="0":
-          print('hhhhhhhhh')
           month = int(month1)
           monthly_orders = Order.objects.filter(order_date__month=month).count()
       # best_moving = Order.objects.filter(order_date__month = today.year).annotate(moving = Count('product_id')).filter(moving__gt = 2)
@@ -87,9 +84,7 @@ def admin_home(request):
       'returns' : returns, 
       'month':str(month),
       'months': ["1","2","3","4","5","6","7","8","9","10","11","12"],
-      'r' : r,
-      's':s,
-      'd':d, })
+       })
   return redirect("admin_login")
 
 

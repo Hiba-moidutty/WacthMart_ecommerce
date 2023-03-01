@@ -133,6 +133,15 @@
                 </div>
                 <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
                   <div class="text-md-center text-xl-left">
+                    <h6 class="mb-1">Order via Razorpay</h6>
+                    {% comment %} <p class="text-muted mb-0">{{paypal_m}}</p> {% endcomment %}
+                  </div>
+                  <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                    <h6 class="font-weight-bold mb-0">{{razorpay_m}}</h6>
+                  </div>
+                </div>
+                <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                  <div class="text-md-center text-xl-left">
                     <h6 class="mb-1">Order via Cash On Delivery</h6>
                     {% comment %} <p class="text-muted mb-0">{{cod_m}}</p> {% endcomment %}
                   </div>
@@ -310,6 +319,7 @@ new Chart(document.getElementById("sales"), {
     }
   }
 });
+
 
 new Chart(document.getElementById("payment_status"), {
   type: 'doughnut',
