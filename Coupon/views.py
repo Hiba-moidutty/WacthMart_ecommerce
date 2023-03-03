@@ -31,6 +31,7 @@ def add_coupon(request):
     messages.success(request,'Coupon added successfully')
     return redirect('coupon')
 
+
 def apply_coupon(request):
 
   if request.POST:

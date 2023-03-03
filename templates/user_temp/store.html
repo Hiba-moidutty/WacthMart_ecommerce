@@ -28,6 +28,19 @@
     <section class="section_pagetop ">
         <div class="container">
             <div><hr></div>
+            <h2 class="title-page">Coupons Available</h2>
+            <div><hr></div>
+            <ol class="cat-list mb--20">
+                {% for c in coupons %}
+                <li><strong>{{c.coupon_name}}</strong> : {{c.coupon_code}} , Valid till : {{c.validity_upto}}</li>
+                <br>
+                {% endfor %}
+            </ol> 
+        </div>
+    </section>
+    <section class="section_pagetop ">
+        <div class="container">
+            <div><hr></div>
             {% if 'search' in request.path %}
             <h2 class="title-page">Top Results</h2> 
             {% else %}
@@ -53,7 +66,7 @@
                                           <li><a href="shop.html">For Womens's (16)</a></li>
                                           <li><a href="shop.html">Jewlery (3)</a></li>
                                           <li><a href="shop.html">Watches (13)</a></li>
-                                      </ul> {% endcomment %}
+                                      </ul>  {% endcomment %}
                                       <div>
                                         <span class="mr-md-auto">
                                           <b>

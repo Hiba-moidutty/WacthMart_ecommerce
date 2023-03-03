@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from User_Section.models import Banner
 from category.models import Product,Category, SubCategory
+from Coupon.models import Coupon
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.db.models import Q
@@ -12,6 +13,7 @@ def user_landingpg(request):
   products =Product.objects.all().filter(is_available = True)
   trending = Product.objects.all().order_by('stock')[2:6]
   banners = Banner.objects.all()
+  # coupons = Coupon.objects.all()
   context ={'products': products,
   'banners':banners,
   'categories':categories,
@@ -33,6 +35,7 @@ def user_home(request):
   products =Product.objects.all().filter(is_available = True)
   trending = Product.objects.all().order_by('stock')[1:5]
   banners = Banner.objects.all()
+  # coupons = Coupon.objects.all()
   print(banners,'kkkkkkkkkkkkkkkkkkkkkkk')
   context ={'products': products,
   'banners':banners,

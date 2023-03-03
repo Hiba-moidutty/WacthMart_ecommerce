@@ -139,7 +139,7 @@ def order_cancel(request):
   product.stock += order.quantity
   product.save()
   order.save()
-  return redirect('order_details')
+  return JsonResponse({"id": id})
 
 
 def order_details(request):
@@ -193,8 +193,9 @@ def return_order(request):
   product = Product.objects.get(id = order.product.id)
   order.status = "Return requested waiting for approval"
   product.save()
+  print(order.status,'llllllllllllll')
   order.save()
-  return redirect('admin_orderedit')
+  return JsonResponse({"id":id})
 
 
 

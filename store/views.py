@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
 from category.models import Category,SubCategory,Product
 from cart.models import Cart,CartItem
+from Coupon.models import Coupon
 from cart.views import cart_id
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -18,6 +19,7 @@ from django.core.paginator import Paginator
 def store(request,category_slug = None,sub_category_slug=None):
   category = Category.objects.all()
   sub_category = SubCategory.objects.all()
+  coupons = Coupon.objects.all()
   subcategories = None
   categories = None
   products = None
@@ -64,9 +66,9 @@ def store(request,category_slug = None,sub_category_slug=None):
     'category' : category,
     'sub_category' : sub_category,
     'product_count' :product_count,
-  }
+    'coupons': coupons
+    }
   return render(request,'user_temp/store.html',context)
-
 
 
 def product_details(request,id):
@@ -91,9 +93,9 @@ def filter_price(request):
     products = Product.objects.filter(Q(price__gte = 1000 , price__lte = 3000))
   elif int(selected) == 3:
     products = Product.objects.filter(Q(price__gte = 3000 , price__lte = 6000))
-  elif int(selected) == 5:
+  elif int(selected) == 4:
     products = Product.objects.filter(Q(price__gte = 6000 , price__lte = 9000))
-  elif int(selected) == 6:
+  elif int(selected) == 5:
     products = Product.objects.filter(Q(price__gte = 9000 , price__lte = 12000))
   else:
     products = Product.objects.filter(Q(price__gte = 12000))

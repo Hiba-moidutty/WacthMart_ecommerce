@@ -11,6 +11,4 @@ urlpatterns = [
   path('delete_category_offer/',views.delete_category_offer,name = 'delete_category_offer'),
 
 
-
-
 ]

@@ -65,7 +65,6 @@ def category_offer(request):
   return render(request,'admin_temp/category_offer.html',{"category": category})
 
 
-
 @never_cache
 @login_required(login_url='admin_login')
 def add_category_offer(request,id):

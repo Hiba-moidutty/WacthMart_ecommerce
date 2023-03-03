@@ -85,7 +85,7 @@
                         <option selected>{{order.status}}</option>
                         {% comment %} <option value="Delivered">Delivered</option> {% endcomment %}
 
-                        {% elif order.status == "Return Approved" %}
+                        {% elif order.status == "Return requested waiting for approval" %}
                         <option selected>{{order.status}}</option>
                         <option value="Delivered">Refund In Progress</option>
                         {% comment %} <option value="Delivered">Refund Initiated</option> {% endcomment %}
@@ -173,11 +173,14 @@
       <!-- partial -->
     </div>
 </div>
-
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+{% comment %} <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> {% endcomment %}
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 
 
 <script>
@@ -264,7 +267,7 @@ function idc(id,oid){
             confirmButtonText: 'Yes'
             }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = 'admin_orderlist';
+                window.location.href = '/order/orderlist';
                 }
             })
         },
