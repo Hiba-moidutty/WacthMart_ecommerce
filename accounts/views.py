@@ -32,7 +32,6 @@ def user_signup(request):
     password2 = request.POST.get('password1')
     
     if password == password2 :
-      print('hiiiiii')
       if not first_name.isalpha():
         messages.error(request,'only letters are to be entered in name!!!')
         return redirect(user_signup)
@@ -93,7 +92,6 @@ def user_login(request):
                 item.save()
 
         except:
-          print('entering inside except block','/////////////////')
           pass
 
         login(request,user)
@@ -135,7 +133,6 @@ def otp_login_validate(request):
   if request.method == 'POST' and request.POST['otp']:
     otp1 = int(request.POST['otp'])
     phone = request.POST.get('phone')
-    print(phone,'#########################')
     validate = MessageHandler(phone,otp1).validate()
     print("validate===",validate)
     if validate == "approved":

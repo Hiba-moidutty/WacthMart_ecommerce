@@ -45,7 +45,6 @@ def admin_home(request):
       total_products = Product.objects.filter(is_available = True).count()
       total_orders = Order.objects.filter(status='placed').count()
       total_revenue = Order.objects.filter(status='Delivered').aggregate(Sum('total_price'))['total_price__sum']
-      # t= total_revenue
 
       #payment method
       cod_m = Order.objects.filter(payment_method ='cash on delivery').count()
@@ -56,11 +55,8 @@ def admin_home(request):
       today   = datetime.now()
       current = today.strftime("%B %d, %Y")
       dates = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(order_items=Count('id')).order_by("order_date__date")
-      print(dates,"TTTTTTTTTTTTTTTTTTTTTTTTT")
       returns = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(return_items=Count('id',filter=Q(status="Cancelled"))).order_by("order_date__date")
-      print(returns,"TTTTTTTTTTTTTTTTTTTTTTTTT")
       sales   = Order.objects.filter(order_date__month = today.month).values("order_date__date").annotate(sales = Count('id',filter=Q(status="Delivered")),cancelled=Count('id',filter=Q(status="Cancelled"))).order_by("order_date__date")
-      print(sales,"TTTTTTTTTTTTTTTTTTTTTTTTT")
       monthly_orders = 0
       if request.GET.get('Month') !="0":
         currentmonth = datetime.now().month
@@ -68,7 +64,6 @@ def admin_home(request):
         if month1  is not None and month1 !="0":
           month = int(month1)
           monthly_orders = Order.objects.filter(order_date__month=month).count()
-      # best_moving = Order.objects.filter(order_date__month = today.year).annotate(moving = Count('product_id')).filter(moving__gt = 2)
       return render(request,"admin_temp/admin_home.html",{
       'current' : current,
       'monthly_orders':monthly_orders,
@@ -87,21 +82,6 @@ def admin_home(request):
        })
   return redirect("admin_login")
 
-
-# def by_month(request):
-#   print("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
-#   #by month
-#   monthly_orders=[]
-#   if request.GET.get('Month') !="0":
-#     currentmonth = datetime.now().month
-#     month1 = request.GET.get('Month')
-#     print(month1,'vvvvvvvvvvvvvvvvvv')
-#     if month1  is not None and month1 !="0":
-#       print('hhhhhhhhh')
-#       month = int(month1)
-#       monthly_orders = Order.objects.filter(order_date__month=month).count()
-#       print(monthly_orders,'eeeeeeeeeee')
-#       return redirect('admin_home')
 
 
 @never_cache
@@ -136,7 +116,6 @@ def block_user(request,id):
 
 
 # Category Mangement
-
 @never_cache
 @login_required(login_url='admin_login')
 def admin_category(request):
@@ -385,7 +364,6 @@ def delete_product(request,id):
 @login_required(login_url="admin_login")
 def sales_report(request):
   orders = Order.objects.annotate(sub_total =F('product__price')*F('quantity')).order_by("-order_date")
-  print(orders,'rrrrrrrrrrrrrrrr')
   if request.GET.get('Month') != "0":
     currentMonth = datetime.now().month
     month1 = request.GET.get('Month')
@@ -397,9 +375,7 @@ def sales_report(request):
     # })
   elif request.GET.get('from_date'):
     from_date  = request.GET.get('from_date')
-    print(from_date,'jjjjjjjjjjjjjjjj')
     to_date  = request.GET.get('to_date')
-    print(to_date,'iiiiiiii')
 
     if not from_date or not to_date:
       messages.info(request,"Please fill from and to date")
@@ -431,7 +407,6 @@ def generateSalesReport(request):
 
   try:
     orders = Order.objects.filter(order_date__range=[from_date1,to_date11]).annotate(sub_total = F('product__price')*F('quantity')).order_by("-order_date")
-    print(orders,'yyyyyyyyyyyyyyyyyyyyyy')
     total_rev = 0
     for i in orders:
       total_rev += i.sub_total
@@ -464,8 +439,6 @@ def generateSalesReport(request):
 # def GenerateCSV(request):
 #   messages.info(request,"something error occured!! ")
 #   return redirect(request.META.get('HTTP_REFERER'))
-
-
 
 
 @never_cache
